@@ -1,5 +1,6 @@
 package org.jnano;
 
+import javax.annotation.Nonnull;
 import java.nio.ByteBuffer;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
@@ -38,6 +39,7 @@ public final class Nanos {
      * @throws ActionNotSupportedException Strong SecureRandom is not available
      * @see SecureRandom#getInstanceStrong()
      */
+    @Nonnull
     public static String generateSeed() {
         try {
             SecureRandom sr = SecureRandom.getInstanceStrong();
@@ -56,8 +58,9 @@ public final class Nanos {
      * @param index
      * @return Nano address (xrb_1111111111111111111111111111111111111111111111111111hifc8npp)
      */
-    public static String createAddress(String seed, int index) {
-        if (seed == null || !seed.matches(SEED_REGEX)) {
+    @Nonnull
+    public static String createAddress(@Nonnull String seed, int index) {
+        if (!seed.matches(SEED_REGEX)) {
             throw new IllegalArgumentException("Invalid seed " + seed);
         }
 
@@ -79,8 +82,9 @@ public final class Nanos {
      * @param address
      * @return public key
      */
-    public static byte[] toPublicKey(String address) {
-        if (address == null || !address.matches(ADDRESS_REGEX)) {
+    @Nonnull
+    public static byte[] toPublicKey(@Nonnull String address) {
+        if (!address.matches(ADDRESS_REGEX)) {
             throw new IllegalArgumentException("Invalid address " + address);
         }
 
@@ -126,8 +130,9 @@ public final class Nanos {
      * @param publicKey
      * @return address
      */
-    public static String toAddress(byte[] publicKey) {
-        if (publicKey == null || publicKey.length != 32) {
+    @Nonnull
+    public static String toAddress(@Nonnull byte[] publicKey) {
+        if (publicKey.length != 32) {
             throw new IllegalArgumentException("Invalid public key" + Arrays.toString(publicKey));
         }
 

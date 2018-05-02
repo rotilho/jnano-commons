@@ -7,7 +7,7 @@ import java.security.SecureRandom;
 import java.util.Arrays;
 import java.util.HashMap;
 
-import static org.jnano.Hex.*;
+import static org.jnano.Hexes.*;
 import static org.jnano.Preconditions.checkArgument;
 
 public final class Nanos {
@@ -96,14 +96,14 @@ public final class Nanos {
             checkbinary += ACCOUNT_BIN_TABLE.get(checksum.charAt(i));
         }
 
-        String hat = Hex.toHex(checkbinary);
+        String hat = Hexes.toHex(checkbinary);
         while (hat.length() < 10)
             hat = "0" + hat;
 
         byte[] checkHex = swapEndian(toByteArray(hat));
 
 
-        String fallaciousalbatross = Hex.toHex(pubbinary);
+        String fallaciousalbatross = Hexes.toHex(pubbinary);
         while (fallaciousalbatross.length() < 64)
             fallaciousalbatross = "0" + fallaciousalbatross;
 

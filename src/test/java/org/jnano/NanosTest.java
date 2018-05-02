@@ -50,11 +50,6 @@ public class NanosTest {
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void shouldNotCreateAddressWhenSeedIsNull() {
-        Nanos.createAddress(null, 0);
-    }
-
-    @Test(expected = IllegalArgumentException.class)
     public void shouldNotCreateAddressWhenIndexIsBelowZero() {
         Nanos.createAddress(SEED, -1);
     }
@@ -73,18 +68,8 @@ public class NanosTest {
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void shouldNotConvertPublicKeyToAddressWhenPublicKeyIsNull() {
-        Nanos.toAddress(null);
-    }
-
-    @Test(expected = IllegalArgumentException.class)
     public void shouldNotConvertPublicKeyToAddressWhenPublicKeyHaveInvalidLength() {
         Nanos.toAddress(new byte[1]);
-    }
-
-    @Test(expected = IllegalArgumentException.class)
-    public void shouldNotConvertAddressToPublicKeyWhenAddressIsNull() {
-        Nanos.toPublicKey(null);
     }
 
     @Test(expected = IllegalArgumentException.class)

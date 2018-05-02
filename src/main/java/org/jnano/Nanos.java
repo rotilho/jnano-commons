@@ -8,6 +8,7 @@ import java.util.Arrays;
 import java.util.HashMap;
 
 import static org.jnano.Hex.*;
+import static org.jnano.Preconditions.checkArgument;
 
 public final class Nanos {
     private static final char[] ACCOUNT_MAP = "13456789abcdefghijkmnopqrstuwxyz".toCharArray();
@@ -21,11 +22,11 @@ public final class Nanos {
     static {
         //populate the ACCOUNT_CHAR_TABLE and ACCOUNT_BIN_TABLE
         for (int i = 0; i < ACCOUNT_MAP.length; i++) {
-            String bin = Integer.toBinaryString(i);
-            while (bin.length() < 5)
-                bin = "0" + bin; //pad with 0
-            ACCOUNT_CHAR_TABLE.put(bin, ACCOUNT_MAP[i]);
-            ACCOUNT_BIN_TABLE.put(ACCOUNT_MAP[i], bin);
+            String binary = Integer.toBinaryString(i);
+            while (binary.length() < 5)
+                binary = "0" + binary; //pad with 0
+            ACCOUNT_CHAR_TABLE.put(binary, ACCOUNT_MAP[i]);
+            ACCOUNT_BIN_TABLE.put(ACCOUNT_MAP[i], binary);
         }
     }
 
@@ -60,15 +61,10 @@ public final class Nanos {
      */
     @Nonnull
     public static String createAddress(@Nonnull String seed, int index) {
-        if (!seed.matches(SEED_REGEX)) {
-            throw new IllegalArgumentException("Invalid seed " + seed);
-        }
+        checkArgument(seed.matches(SEED_REGEX), () -> "Invalid seed " + seed);
+        checkArgument(index >= 0, () -> "Invalid index " + index);
 
-        if (index < 0) {
-            throw new IllegalArgumentException("Invalid index " + index);
-        }
-
-        byte[] privateKey = Hash.digest256(
+        byte[] privateKey = Hashes.digest256(
                 toByteArray(seed), //add seed
                 ByteBuffer.allocate(4).putInt(index).array() //and add index
         ); //digest 36 bytes into 32
@@ -84,42 +80,38 @@ public final class Nanos {
      */
     @Nonnull
     public static byte[] toPublicKey(@Nonnull String address) {
-        if (!address.matches(ADDRESS_REGEX)) {
-            throw new IllegalArgumentException("Invalid address " + address);
-        }
+        checkArgument(address.matches(ADDRESS_REGEX), () -> "Invalid address " + address);
 
         String pub = address.substring(4, address.length() - 8);
         String checksum = address.substring(address.length() - 8);
 
-        String pubBin = "";
+        String pubbinary = "";
         for (int i = 0; i < pub.length(); i++) {
-            pubBin += ACCOUNT_BIN_TABLE.get(pub.charAt(i));
+            pubbinary += ACCOUNT_BIN_TABLE.get(pub.charAt(i));
         }
-        pubBin = pubBin.substring(4);
+        pubbinary = pubbinary.substring(4);
 
-        String checkBin = "";
+        String checkbinary = "";
         for (int i = 0; i < checksum.length(); i++) {
-            checkBin += ACCOUNT_BIN_TABLE.get(checksum.charAt(i));
+            checkbinary += ACCOUNT_BIN_TABLE.get(checksum.charAt(i));
         }
 
-        String hat = Hex.toHex(checkBin);
+        String hat = Hex.toHex(checkbinary);
         while (hat.length() < 10)
             hat = "0" + hat;
 
         byte[] checkHex = swapEndian(toByteArray(hat));
 
 
-        String fallaciousalbatross = Hex.toHex(pubBin);
+        String fallaciousalbatross = Hex.toHex(pubbinary);
         while (fallaciousalbatross.length() < 64)
             fallaciousalbatross = "0" + fallaciousalbatross;
 
         byte[] publicKey = toByteArray(fallaciousalbatross);
 
-        byte[] digest = Hash.digest(5, publicKey);
+        byte[] digest = Hashes.digest(5, publicKey);
 
-        if (!Arrays.equals(digest, checkHex)) {
-            throw new IllegalArgumentException("Invalid checksum " + checksum);
-        }
+        checkArgument(Arrays.equals(digest, checkHex), () -> "Invalid checksum " + checksum);
 
         return publicKey;
     }
@@ -132,23 +124,21 @@ public final class Nanos {
      */
     @Nonnull
     public static String toAddress(@Nonnull byte[] publicKey) {
-        if (publicKey.length != 32) {
-            throw new IllegalArgumentException("Invalid public key" + Arrays.toString(publicKey));
-        }
+        checkArgument(publicKey.length == 32, () -> "Invalid public key" + Arrays.toString(publicKey));
 
         String keyBinary = toBinary(toHex(publicKey)); //we get the address by picking
         //five bit (not byte!) chunks of the public key (in binary)
 
-        byte[] digest = swapEndian(Hash.digest(5, publicKey)); //the original wallet flips it
-        String bin = toBinary(toHex(digest)); //we get the checksum by, similarly
+        byte[] digest = swapEndian(Hashes.digest(5, publicKey)); //the original wallet flips it
+        String binary = toBinary(toHex(digest)); //we get the checksum by, similarly
         //to getting the address, picking 5 bit chunks of the five byte digest
 
         //calculate the checksum:
         String checksum = ""; //string that we will populate with the checksum chars
-        while (bin.length() < digest.length * 8)
-            bin = "0" + bin; //leading zeroes are sometimes omitted (idk why)
+        while (binary.length() < digest.length * 8)
+            binary = "0" + binary; //leading zeroes are sometimes omitted (idk why)
         for (int i = 0; i < ((digest.length * 8) / 5); i++) {
-            String fiveBit = bin.substring(i * 5, (i * 5) + 5);
+            String fiveBit = binary.substring(i * 5, (i * 5) + 5);
             checksum += ACCOUNT_CHAR_TABLE.get(fiveBit);//go through the [40] bits in
             //our digest and turn each five into a char using the accountCharTable
         }

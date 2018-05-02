@@ -2,7 +2,7 @@ package org.jnano;
 
 import java.math.BigInteger;
 
-public final class Hex {
+final class Hex {
     /**
      * An array of hex characters used by the {@link #toHex(byte[])}
      * method.

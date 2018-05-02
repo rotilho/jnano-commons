@@ -4,7 +4,7 @@ import com.rfksystems.blake2b.security.Blake2bProvider;
 
 import java.security.Security;
 
-public final class PublicKeys {
+final class PublicKeys {
     static {
         Security.addProvider(new Blake2bProvider());
     }

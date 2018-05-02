@@ -4,10 +4,10 @@ import com.rfksystems.blake2b.Blake2b;
 
 import java.util.stream.Stream;
 
-final class Hash {
+final class Hashes {
     private static final int DIGEST_256 = 256 / 8;
 
-    private Hash() {
+    private Hashes() {
     }
 
     public static byte[] digest256(byte[]... bytes) {

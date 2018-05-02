@@ -4,7 +4,7 @@ import com.rfksystems.blake2b.Blake2b;
 
 import java.util.stream.Stream;
 
-public final class Hash {
+final class Hash {
     private static final int DIGEST_256 = 256 / 8;
 
     private Hash() {

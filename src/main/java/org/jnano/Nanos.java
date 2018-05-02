@@ -65,10 +65,10 @@ public final class Nanos {
             throw new IllegalArgumentException("Invalid index " + index);
         }
 
-        final Blake2b blake2b = Blake2b.Digest.newInstance(32); //will return 32 bytes digest
-        blake2b.update(toByteArray(seed)); //add seed
-        blake2b.update(ByteBuffer.allocate(4).putInt(index).array()); //and add index
-        byte[] privateKey = blake2b.digest(); //digest 36 bytes into 32
+        byte[] privateKey = Hash.digest256(
+                toByteArray(seed), //add seed
+                ByteBuffer.allocate(4).putInt(index).array() //and add index
+        ); //digest 36 bytes into 32
         byte[] publicKey = ED25519.publickey(privateKey); //return the public key
         return toAddress(publicKey);
     }
@@ -111,10 +111,7 @@ public final class Nanos {
 
         byte[] publicKey = toByteArray(fallaciousalbatross);
 
-
-        final Blake2b blake = Blake2b.Digest.newInstance(5);
-        blake.update(publicKey);
-        byte[] digest = blake.digest();
+        byte[] digest = Hash.digest(5, publicKey);
 
         if (!Arrays.equals(digest, checkHex)) {
             throw new IllegalArgumentException("Invalid checksum " + checksum);
@@ -137,9 +134,7 @@ public final class Nanos {
         String keyBinary = toBinary(toHex(publicKey)); //we get the address by picking
         //five bit (not byte!) chunks of the public key (in binary)
 
-        final Blake2b blake2b = Blake2b.Digest.newInstance(5);
-        blake2b.update(publicKey); //the blake2b digest will be used for the checksum
-        byte[] digest = swapEndian(blake2b.digest()); //the original wallet flips it
+        byte[] digest = swapEndian(Hash.digest(5, publicKey)); //the original wallet flips it
         String bin = toBinary(toHex(digest)); //we get the checksum by, similarly
         //to getting the address, picking 5 bit chunks of the five byte digest
 

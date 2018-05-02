@@ -12,5 +12,6 @@ repositories {
 }
 
 dependencies {
+    compile "com.rfksystems:blake2b:1.0.0"
     testCompile 'junit:junit:4.12'
 }

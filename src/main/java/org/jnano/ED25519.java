@@ -33,18 +33,7 @@ class ED25519 {
             "57896044618658097711785492504343953926634992332820282019728792003956564819967");
 
     static byte[] H(byte[] m) {
-        // MessageDigest md;
-        // try {
-        // md = MessageDigest.getInstance("SHA-512");
-        // md.reset();
-        // return md.digest(m);
-        // } catch (Exception e) {
-        // e.printStackTrace();
-        // System.exit(1);
-        // }
-        // return null;
-        Blake2b blake = Blake2b.Digest.newInstance(64);
-        return blake.digest(m);
+        return Hash.digest(64, m);
     }
 
     static BigInteger expmod(BigInteger b, BigInteger e, BigInteger m) {

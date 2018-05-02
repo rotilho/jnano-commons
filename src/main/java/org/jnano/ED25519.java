@@ -10,6 +10,8 @@ import java.util.Arrays;
  * - thanks k3d3!, note to anyone reading: the only change in this class is the digest method: H(byte[]).
  */
 
+//TODO: remove this class and use https://github.com/str4d/ed25519-java dependency compile 'net.i2p.crypto:eddsa:0.2.0'
+@Deprecated
 class ED25519 {
     static final int b = 256;
     static final BigInteger q = new BigInteger(

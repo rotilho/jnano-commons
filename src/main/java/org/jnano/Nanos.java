@@ -72,7 +72,7 @@ public final class Nanos {
                 toByteArray(seed), //add seed
                 ByteBuffer.allocate(4).putInt(index).array() //and add index
         ); //digest 36 bytes into 32
-        byte[] publicKey = ED25519.publickey(privateKey); //return the public key
+        byte[] publicKey = PublicKeys.generate(privateKey);
         return toAddress(publicKey);
     }
 

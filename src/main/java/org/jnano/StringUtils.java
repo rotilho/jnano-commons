@@ -8,6 +8,11 @@ final class StringUtils {
         if (str.length() >= size) {
             return str;
         }
-        return String.format("%0" + size + "d", Integer.parseInt(str));
+
+        StringBuilder builder = new StringBuilder();
+        while (str.length() + builder.length() < size) {
+            builder.append("0");
+        }
+        return builder.append(str).toString();
     }
 }

@@ -5,30 +5,13 @@ import java.nio.ByteBuffer;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 import java.util.Arrays;
-import java.util.HashMap;
 
 import static org.jnano.Hexes.*;
 import static org.jnano.Preconditions.checkArgument;
 
 public final class Nanos {
-    private static final char[] ACCOUNT_MAP = "13456789abcdefghijkmnopqrstuwxyz".toCharArray();
-
-    private static final HashMap<String, Character> ACCOUNT_CHAR_TABLE = new HashMap<>();
-    private static final HashMap<Character, String> ACCOUNT_BIN_TABLE = new HashMap<>();
-
     public static final String SEED_REGEX = "^[A-Z0-9]{64}$";
     public static final String ADDRESS_REGEX = "^(xrb_)[13456789abcdefghijkmnopqrstuwxyz]{60}$";
-
-    static {
-        //populate the ACCOUNT_CHAR_TABLE and ACCOUNT_BIN_TABLE
-        for (int i = 0; i < ACCOUNT_MAP.length; i++) {
-            String binary = Integer.toBinaryString(i);
-            while (binary.length() < 5)
-                binary = "0" + binary; //pad with 0
-            ACCOUNT_CHAR_TABLE.put(binary, ACCOUNT_MAP[i]);
-            ACCOUNT_BIN_TABLE.put(ACCOUNT_MAP[i], binary);
-        }
-    }
 
     private Nanos() {
     }
@@ -64,10 +47,7 @@ public final class Nanos {
         checkArgument(seed.matches(SEED_REGEX), () -> "Invalid seed " + seed);
         checkArgument(index >= 0, () -> "Invalid index " + index);
 
-        byte[] privateKey = Hashes.digest256(
-                toByteArray(seed), //add seed
-                ByteBuffer.allocate(4).putInt(index).array() //and add index
-        ); //digest 36 bytes into 32
+        byte[] privateKey = Hashes.digest256(toByteArray(seed), ByteBuffer.allocate(4).putInt(index).array()); //digest 36 bytes into 32
         byte[] publicKey = PublicKeys.generate(privateKey);
         return toAddress(publicKey);
     }
@@ -85,8 +65,8 @@ public final class Nanos {
         String pub = address.substring(4, address.length() - 8);
         String checksum = address.substring(address.length() - 8);
 
-        String pubbinary = AccountEncodes.decode(pub).substring(4);
-        String checkbinary = AccountEncodes.decode(checksum);
+        String pubbinary = AddressEncodes.decode(pub).substring(4);
+        String checkbinary = AddressEncodes.decode(checksum);
         String hat = StringUtils.leftPad(Hexes.toHex(checkbinary), 10);
         String fallaciousalbatross = StringUtils.leftPad(Hexes.toHex(pubbinary), 64);
 
@@ -109,34 +89,21 @@ public final class Nanos {
     public static String toAddress(@Nonnull byte[] publicKey) {
         checkArgument(publicKey.length == 32, () -> "Invalid public key" + Arrays.toString(publicKey));
 
-        String keyBinary = toBinary(toHex(publicKey)); //we get the address by picking
+        String keyBinary = StringUtils.leftPad(toBinary(toHex(publicKey)), 260); //we get the address by picking
         //five bit (not byte!) chunks of the public key (in binary)
 
         byte[] digest = swapEndian(Hashes.digest(5, publicKey)); //the original wallet flips it
         String binary = StringUtils.leftPad(toBinary(toHex(digest)), digest.length * 8); //we get the checksum by, similarly
-        //to getting the address, picking 5 bit chunks of the five byte digest
 
-        //calculate the checksum:
-        String checksum = ""; //string that we will populate with the checksum chars
-        for (int i = 0; i < ((digest.length * 8) / 5); i++) {
-            String fiveBit = binary.substring(i * 5, (i * 5) + 5);
-            checksum += ACCOUNT_CHAR_TABLE.get(fiveBit);//go through the [40] bits in
-            //our digest and turn each five into a char using the accountCharTable
-        }
-
-        //calculate the address
-        String account = ""; //string to populate with address chars
-        while (keyBinary.length() < 260) //binary for address should always be 260 bits
-            keyBinary = "0" + keyBinary; //so pad it if it isn't
-        for (int i = 0; i < keyBinary.length(); i += 5) {
-            String fiveBit = keyBinary.substring(i, i + 5);
-            account += ACCOUNT_CHAR_TABLE.get(fiveBit); //go through the 260 bits that
-            //represent our public key five bits at a time and convert each five bits
-            //into a char that is retrieved from the accountCharTable
-        }
+        String checksum = AddressEncodes.encode(binary);
+        String account = AddressEncodes.encode(keyBinary);
 
         //return the address prefixed with xrb_ and suffixed with
         return "xrb_" + account + checksum;
+    }
+
+    public static String hash(byte[]... byteArrays) {
+        return Hexes.toHex(Hashes.digest256(byteArrays));
     }
 
     private static byte[] swapEndian(byte[] b) {

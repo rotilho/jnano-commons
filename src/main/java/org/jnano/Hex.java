@@ -2,9 +2,9 @@ package org.jnano;
 
 import java.math.BigInteger;
 
-public final class DataManipulationUtil {
+public final class Hex {
     /**
-     * An array of hex characters used by the {@link #bytesToHex(byte[])}
+     * An array of hex characters used by the {@link #toHex(byte[])}
      * method.
      */
     private static final char[] HEX_ARRAY = "0123456789ABCDEF".toCharArray();
@@ -20,7 +20,7 @@ public final class DataManipulationUtil {
      * @param bytes An array of bytes to be represented as a string.
      * @return A string representation of the passed byte array.
      */
-    static String bytesToHex(byte[] bytes) {
+    static String toHex(byte[] bytes) {
         char[] hexChars = new char[bytes.length * 2];
         for (int j = 0; j < bytes.length; j++) {
             int v = bytes[j] & 0xFF;
@@ -32,14 +32,14 @@ public final class DataManipulationUtil {
 
     /**
      * Returns a string containing an array of bytes as a byte array.
-     * This inverses the {@link #bytesToHex(byte[])} method - if a
+     * This inverses the {@link #toHex(byte[])} method - if a
      * string containing "CAFEBABE" is passed to this method, it will
      * return a byte array containing: 0xCA, 0xFE, 0xBA, 0xBE.
      *
      * @param s A string containing hex bytes.
      * @return A byte array containing the bytes of a passed string.
      */
-    static byte[] hexStringToByteArray(String s) {
+    static byte[] toByteArray(String s) {
         int len = s.length();
         byte[] data = new byte[len / 2];
         for (int i = 0; i < len; i += 2) {
@@ -47,21 +47,6 @@ public final class DataManipulationUtil {
                     + Character.digit(s.charAt(i + 1), 16));
         }
         return data;
-    }
-
-    /**
-     * Swaps the endianness of a byte array. This is achieved by
-     * reversing the byte array, the original array is not changed.
-     *
-     * @param b The byte array to have the order reversed.
-     * @return The passed byte array, but reversed.
-     */
-    static byte[] swapEndian(byte[] b) {
-        byte[] bb = new byte[b.length];
-        for (int i = b.length; i > 0; i--) {
-            bb[b.length - i] = b[i - 1];
-        }
-        return bb;
     }
 
     /**
@@ -78,13 +63,13 @@ public final class DataManipulationUtil {
      * @param hex A string containing valid hex characters.
      * @return A binary representation of the passed string.
      */
-    static String hexToBinary(String hex) {
+    static String toBinary(String hex) {
         String value = new BigInteger(hex, 16).toString(2);
         String formatPad = "%" + (hex.length() * 4) + "s";
         return (String.format(formatPad, value).replace(" ", ""));
     }
 
-    static String binaryToHex(String bin) {
+    static String toHex(String bin) {
         BigInteger b = new BigInteger(bin, 2);
         return b.toString(16).toUpperCase();
     }

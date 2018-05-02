@@ -6,7 +6,7 @@ import java.security.SecureRandom;
 import java.util.Arrays;
 import java.util.HashMap;
 
-import static org.jnano.DataManipulationUtil.*;
+import static org.jnano.Hex.*;
 
 public final class Nanos {
     private static final char[] ACCOUNT_MAP = "13456789abcdefghijkmnopqrstuwxyz".toCharArray();
@@ -43,7 +43,7 @@ public final class Nanos {
             SecureRandom sr = SecureRandom.getInstanceStrong();
             byte[] seed = new byte[32];
             sr.nextBytes(seed);
-            return bytesToHex(seed);
+            return toHex(seed);
         } catch (NoSuchAlgorithmException e) {
             throw new ActionNotSupportedException("Seed generation not supported", e);
         }
@@ -66,7 +66,7 @@ public final class Nanos {
         }
 
         final Blake2b blake2b = Blake2b.Digest.newInstance(32); //will return 32 bytes digest
-        blake2b.update(hexStringToByteArray(seed)); //add seed
+        blake2b.update(toByteArray(seed)); //add seed
         blake2b.update(ByteBuffer.allocate(4).putInt(index).array()); //and add index
         byte[] privateKey = blake2b.digest(); //digest 36 bytes into 32
         byte[] publicKey = ED25519.publickey(privateKey); //return the public key
@@ -98,18 +98,18 @@ public final class Nanos {
             checkBin += ACCOUNT_BIN_TABLE.get(checksum.charAt(i));
         }
 
-        String hat = binaryToHex(checkBin);
+        String hat = Hex.toHex(checkBin);
         while (hat.length() < 10)
             hat = "0" + hat;
 
-        byte[] checkHex = swapEndian(hexStringToByteArray(hat));
+        byte[] checkHex = swapEndian(toByteArray(hat));
 
 
-        String fallaciousalbatross = binaryToHex(pubBin);
+        String fallaciousalbatross = Hex.toHex(pubBin);
         while (fallaciousalbatross.length() < 64)
             fallaciousalbatross = "0" + fallaciousalbatross;
 
-        byte[] publicKey = hexStringToByteArray(fallaciousalbatross);
+        byte[] publicKey = toByteArray(fallaciousalbatross);
 
 
         final Blake2b blake = Blake2b.Digest.newInstance(5);
@@ -134,13 +134,13 @@ public final class Nanos {
             throw new IllegalArgumentException("Invalid public key" + Arrays.toString(publicKey));
         }
 
-        String keyBinary = hexToBinary(bytesToHex(publicKey)); //we get the address by picking
+        String keyBinary = toBinary(toHex(publicKey)); //we get the address by picking
         //five bit (not byte!) chunks of the public key (in binary)
 
         final Blake2b blake2b = Blake2b.Digest.newInstance(5);
         blake2b.update(publicKey); //the blake2b digest will be used for the checksum
         byte[] digest = swapEndian(blake2b.digest()); //the original wallet flips it
-        String bin = hexToBinary(bytesToHex(digest)); //we get the checksum by, similarly
+        String bin = toBinary(toHex(digest)); //we get the checksum by, similarly
         //to getting the address, picking 5 bit chunks of the five byte digest
 
         //calculate the checksum:
@@ -166,6 +166,14 @@ public final class Nanos {
 
         //return the address prefixed with xrb_ and suffixed with
         return "xrb_" + account + checksum;
+    }
+
+    private static byte[] swapEndian(byte[] b) {
+        byte[] bb = new byte[b.length];
+        for (int i = b.length; i > 0; i--) {
+            bb[b.length - i] = b[i - 1];
+        }
+        return bb;
     }
 
     public static class ActionNotSupportedException extends RuntimeException {

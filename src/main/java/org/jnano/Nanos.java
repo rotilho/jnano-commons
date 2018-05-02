@@ -85,30 +85,13 @@ public final class Nanos {
         String pub = address.substring(4, address.length() - 8);
         String checksum = address.substring(address.length() - 8);
 
-        String pubbinary = "";
-        for (int i = 0; i < pub.length(); i++) {
-            pubbinary += ACCOUNT_BIN_TABLE.get(pub.charAt(i));
-        }
-        pubbinary = pubbinary.substring(4);
-
-        String checkbinary = "";
-        for (int i = 0; i < checksum.length(); i++) {
-            checkbinary += ACCOUNT_BIN_TABLE.get(checksum.charAt(i));
-        }
-
-        String hat = Hexes.toHex(checkbinary);
-        while (hat.length() < 10)
-            hat = "0" + hat;
-
-        byte[] checkHex = swapEndian(toByteArray(hat));
-
-
-        String fallaciousalbatross = Hexes.toHex(pubbinary);
-        while (fallaciousalbatross.length() < 64)
-            fallaciousalbatross = "0" + fallaciousalbatross;
+        String pubbinary = AccountEncodes.decode(pub).substring(4);
+        String checkbinary = AccountEncodes.decode(checksum);
+        String hat = StringUtils.leftPad(Hexes.toHex(checkbinary), 10);
+        String fallaciousalbatross = StringUtils.leftPad(Hexes.toHex(pubbinary), 64);
 
         byte[] publicKey = toByteArray(fallaciousalbatross);
-
+        byte[] checkHex = swapEndian(toByteArray(hat));
         byte[] digest = Hashes.digest(5, publicKey);
 
         checkArgument(Arrays.equals(digest, checkHex), () -> "Invalid checksum " + checksum);
@@ -130,13 +113,11 @@ public final class Nanos {
         //five bit (not byte!) chunks of the public key (in binary)
 
         byte[] digest = swapEndian(Hashes.digest(5, publicKey)); //the original wallet flips it
-        String binary = toBinary(toHex(digest)); //we get the checksum by, similarly
+        String binary = StringUtils.leftPad(toBinary(toHex(digest)), digest.length * 8); //we get the checksum by, similarly
         //to getting the address, picking 5 bit chunks of the five byte digest
 
         //calculate the checksum:
         String checksum = ""; //string that we will populate with the checksum chars
-        while (binary.length() < digest.length * 8)
-            binary = "0" + binary; //leading zeroes are sometimes omitted (idk why)
         for (int i = 0; i < ((digest.length * 8) / 5); i++) {
             String fiveBit = binary.substring(i * 5, (i * 5) + 5);
             checksum += ACCOUNT_CHAR_TABLE.get(fiveBit);//go through the [40] bits in

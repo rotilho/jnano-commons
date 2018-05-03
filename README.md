@@ -7,4 +7,3 @@ The initial code was kindely extract from [Rain](https://github.com/thehen101/Ra
 
 ### Currently we have few know bugs:
 - PoW validations are not working (which also affect PoW generation)
-- StateBlock hashing not working

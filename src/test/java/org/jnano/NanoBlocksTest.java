@@ -69,19 +69,88 @@ public class NanoBlocksTest {
     }
 
     @Test
-    public void shouldHashStateBlock() {
+    public void shouldHashOpenStateBlock() {
         // given
-        String account = "xrb_1eebu11bdt3j55jbuy8tmz1seu6tz1rdocg4isur3a15nsdpjck6w31hagjs";
-        String previous = "BE20FF44AF3F271E5BEDEA37AC103B651179E7795072BA4EA6590E7420668DC7";
-        String representative = "xrb_1i9ugg14c5sph67z4st9xk8xatz59xntofqpbagaihctg6ngog1f45mwoa54";
-        BigInteger balance = new BigInteger("1240000000000000000000000000000");
-        String link = "AAAB4AEC6CE72307A0264EA1AC252FC2FECB6A91836DA4D5C0696E7BD6D6E657";
+        String account = "xrb_3igf8hd4sjshoibbbkeitmgkp1o6ug4xads43j6e4gqkj5xk5o83j8ja9php";
+        String previous = "0";
+        String representative = "xrb_3p1asma84n8k84joneka776q4egm5wwru3suho9wjsfyuem8j95b3c78nw8j";
+        BigInteger balance = new BigInteger("1");
+        String link = "1EF0AD02257987B48030CC8D38511D3B2511672F33AF115AD09E18A86A8355A8";
 
         // when
         String hash = NanoBlocks.hashStateBlock(account, previous, representative, balance, link);
 
         // then
-        String expectedHash = "87DB846B0CF844D605EAE06B79D3F9C0C4BEF8DC685CF8916C6A38E1E8CC9896";
+        String expectedHash = "FC5A7FB777110A858052468D448B2DF22B648943C097C0608D1E2341007438B0";
+        assertEquals(expectedHash, hash);
+    }
+
+    @Test
+    public void shouldHashReceiveStateBlock() {
+        // given
+        String account = "xrb_3igf8hd4sjshoibbbkeitmgkp1o6ug4xads43j6e4gqkj5xk5o83j8ja9php";
+        String previous = "FC5A7FB777110A858052468D448B2DF22B648943C097C0608D1E2341007438B0";
+        String representative = "xrb_3p1asma84n8k84joneka776q4egm5wwru3suho9wjsfyuem8j95b3c78nw8j";
+        BigInteger balance = new BigInteger("5000000000000000000000000000001");
+        String link = "B2EC73C1F503F47E051AD72ECB512C63BA8E1A0ACC2CEE4EA9A22FE1CBDB693F";
+
+        // when
+        String hash = NanoBlocks.hashStateBlock(account, previous, representative, balance, link);
+
+        // then
+        String expectedHash = "597395E83BD04DF8EF30AF04234EAAFE0606A883CF4AEAD2DB8196AAF5C4444F";
+        assertEquals(expectedHash, hash);
+    }
+
+    @Test
+    public void shouldHashSendStateBlock() {
+        // given
+        String account = "xrb_3igf8hd4sjshoibbbkeitmgkp1o6ug4xads43j6e4gqkj5xk5o83j8ja9php";
+        String previous = "597395E83BD04DF8EF30AF04234EAAFE0606A883CF4AEAD2DB8196AAF5C4444F";
+        String representative = "xrb_3p1asma84n8k84joneka776q4egm5wwru3suho9wjsfyuem8j95b3c78nw8j";
+        BigInteger balance = new BigInteger("3000000000000000000000000000001");
+        String link = "xrb_1q3hqecaw15cjt7thbtxu3pbzr1eihtzzpzxguoc37bj1wc5ffoh7w74gi6p";
+
+        // when
+        String hash = NanoBlocks.hashStateBlock(account, previous, representative, balance, link);
+
+        // then
+        String expectedHash = "128106287002E595F479ACD615C818117FCB3860EC112670557A2467386249D4";
+        assertEquals(expectedHash, hash);
+    }
+
+    @Test
+    public void shouldHashChangeStateBlock() {
+        // given
+        String account = "xrb_3igf8hd4sjshoibbbkeitmgkp1o6ug4xads43j6e4gqkj5xk5o83j8ja9php";
+        String previous = "128106287002E595F479ACD615C818117FCB3860EC112670557A2467386249D4";
+        String representative = "xrb_1anrzcuwe64rwxzcco8dkhpyxpi8kd7zsjc1oeimpc3ppca4mrjtwnqposrs";
+        BigInteger balance = new BigInteger("3000000000000000000000000000001");
+        String link = "0000000000000000000000000000000000000000000000000000000000000000";
+
+        // when
+        String hash = NanoBlocks.hashStateBlock(account, previous, representative, balance, link);
+
+        // then
+        String expectedHash = "2A322FD5ACAF50C057A8CF5200A000CF1193494C79C786B579E0B4A7D10E5A1E";
+        assertEquals(expectedHash, hash);
+    }
+
+
+    @Test
+    public void shouldHashChangeAndSendStateBlock() {
+        // given
+        String account = "xrb_3igf8hd4sjshoibbbkeitmgkp1o6ug4xads43j6e4gqkj5xk5o83j8ja9php";
+        String previous = "2A322FD5ACAF50C057A8CF5200A000CF1193494C79C786B579E0B4A7D10E5A1E";
+        String representative = "xrb_3p1asma84n8k84joneka776q4egm5wwru3suho9wjsfyuem8j95b3c78nw8j";
+        BigInteger balance = new BigInteger("1");
+        String link = "xrb_1q3hqecaw15cjt7thbtxu3pbzr1eihtzzpzxguoc37bj1wc5ffoh7w74gi6p";
+
+        // when
+        String hash = NanoBlocks.hashStateBlock(account, previous, representative, balance, link);
+
+        // then
+        String expectedHash = "9664412A834F0C27056C7BC4A363FBAE86DF8EF51341A5A5EA14061727AE519F";
         assertEquals(expectedHash, hash);
     }
 

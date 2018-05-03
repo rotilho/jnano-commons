@@ -7,6 +7,8 @@ import static org.jnano.DataUtils.radix;
 import static org.jnano.DataUtils.toByteArray;
 
 public final class NanoBlocks {
+    private final static byte[] STATE_BLOCK_PREAMBLE = toByteArray("0000000000000000000000000000000000000000000000000000000000000006");
+
     private NanoBlocks() {
     }
 
@@ -18,8 +20,7 @@ public final class NanoBlocks {
 
     @Nonnull
     public static String hashSendBlock(@Nonnull String previous, @Nonnull String destination, @Nonnull BigInteger balance) {
-        String radixBalance = radix(balance);
-        return hash(toByteArray(previous), NanoAccounts.toPublicKey(destination), toByteArray(radixBalance));
+        return hash(toByteArray(previous), NanoAccounts.toPublicKey(destination), toByteArray(radix(balance)));
     }
 
     @Nonnull
@@ -34,12 +35,12 @@ public final class NanoBlocks {
 
     @Nonnull
     public static String hashStateBlock(@Nonnull String account, @Nonnull String previous, @Nonnull String representative, @Nonnull BigInteger balance, @Nonnull String link) {
-        String radixBalance = radix(balance);
         return hash(
+                STATE_BLOCK_PREAMBLE,
                 NanoAccounts.toPublicKey(account),
-                toByteArray(previous),
+                toByteArray(StringUtils.leftPad(previous, 64)),
                 NanoAccounts.toPublicKey(representative),
-                toByteArray(radixBalance),
+                toByteArray(radix(balance)),
                 link.startsWith("xrb_") ? NanoAccounts.toPublicKey(link) : toByteArray(link)
         );
     }

@@ -75,8 +75,4 @@ final class Hexes {
         BigInteger b = new BigInteger(bin, 2);
         return b.toString(16).toUpperCase();
     }
-
-    static String toHex(BigInteger value) {
-        return StringUtils.leftPad(value.toString(16).toUpperCase(), 32);
-    }
 }

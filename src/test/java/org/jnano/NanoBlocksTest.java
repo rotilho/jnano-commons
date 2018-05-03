@@ -68,21 +68,21 @@ public class NanoBlocksTest {
         assertEquals(expectedHash, hash);
     }
 
-//    @Test
-//    public void shouldHashStateBlock() {
-//        // given
-//        String account = "xrb_1eebu11bdt3j55jbuy8tmz1seu6tz1rdocg4isur3a15nsdpjck6w31hagjs";
-//        String previous = "BE20FF44AF3F271E5BEDEA37AC103B651179E7795072BA4EA6590E7420668DC7";
-//        String representative = "xrb_1i9ugg14c5sph67z4st9xk8xatz59xntofqpbagaihctg6ngog1f45mwoa54";
-//        BigInteger balance = new BigInteger("1240000000000000000000000000000");
-//        String link = "AAAB4AEC6CE72307A0264EA1AC252FC2FECB6A91836DA4D5C0696E7BD6D6E657";
-//
-//        // when
-//        String hash = NanoBlocks.hashStateBlock(account, previous, representative, balance, link);
-//
-//        // then
-//        String expectedHash = "87DB846B0CF844D605EAE06B79D3F9C0C4BEF8DC685CF8916C6A38E1E8CC9896";
-//        assertEquals(expectedHash, hash);
-//    }
+    @Test
+    public void shouldHashStateBlock() {
+        // given
+        String account = "xrb_1eebu11bdt3j55jbuy8tmz1seu6tz1rdocg4isur3a15nsdpjck6w31hagjs";
+        String previous = "BE20FF44AF3F271E5BEDEA37AC103B651179E7795072BA4EA6590E7420668DC7";
+        String representative = "xrb_1i9ugg14c5sph67z4st9xk8xatz59xntofqpbagaihctg6ngog1f45mwoa54";
+        BigInteger balance = new BigInteger("1240000000000000000000000000000");
+        String link = "AAAB4AEC6CE72307A0264EA1AC252FC2FECB6A91836DA4D5C0696E7BD6D6E657";
+
+        // when
+        String hash = NanoBlocks.hashStateBlock(account, previous, representative, balance, link);
+
+        // then
+        String expectedHash = "87DB846B0CF844D605EAE06B79D3F9C0C4BEF8DC685CF8916C6A38E1E8CC9896";
+        assertEquals(expectedHash, hash);
+    }
 
 }

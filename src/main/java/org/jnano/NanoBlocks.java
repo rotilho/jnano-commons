@@ -4,11 +4,8 @@ import javax.annotation.Nonnull;
 import java.math.BigInteger;
 
 import static org.jnano.Hexes.toByteArray;
-import static org.jnano.Hexes.toHex;
 
 public final class NanoBlocks {
-
-
     private NanoBlocks() {
     }
 
@@ -20,8 +17,8 @@ public final class NanoBlocks {
 
     @Nonnull
     public static String hashSendBlock(@Nonnull String previous, @Nonnull String destination, @Nonnull BigInteger balance) {
-        String hexBalance = toHex(balance);
-        return hash(toByteArray(previous), NanoAccounts.toPublicKey(destination), toByteArray(hexBalance));
+        String radixBalance = radix(balance);
+        return hash(toByteArray(previous), NanoAccounts.toPublicKey(destination), toByteArray(radixBalance));
     }
 
     @Nonnull
@@ -34,20 +31,24 @@ public final class NanoBlocks {
         return hash(toByteArray(previous), NanoAccounts.toPublicKey(representative));
     }
 
-//    @Nonnull
-//    public static String hashStateBlock(@Nonnull String account, @Nonnull String previous, @Nonnull String representative, @Nonnull BigInteger balance, @Nonnull String link) {
-//        String hexBalance = toHex(balance);
-//        return hash(
-//                NanoAccounts.toPublicKey(account),
-//                toByteArray(previous),
-//                NanoAccounts.toPublicKey(representative),
-//                toByteArray(hexBalance),
-//                link.startsWith("xrb_") ? NanoAccounts.toPublicKey(link) : toByteArray(link)
-//        );
-//    }
+    @Nonnull
+    public static String hashStateBlock(@Nonnull String account, @Nonnull String previous, @Nonnull String representative, @Nonnull BigInteger balance, @Nonnull String link) {
+        String radixBalance = radix(balance);
+        return hash(
+                NanoAccounts.toPublicKey(account),
+                toByteArray(previous),
+                NanoAccounts.toPublicKey(representative),
+                toByteArray(radixBalance),
+                link.startsWith("xrb_") ? NanoAccounts.toPublicKey(link) : toByteArray(link)
+        );
+    }
 
     private static String hash(byte[]... byteArrays) {
         return Hexes.toHex(Hashes.digest256(byteArrays));
+    }
+
+    private static String radix(BigInteger value) {
+        return StringUtils.leftPad(value.toString(16).toUpperCase(), 32);
     }
 
 }

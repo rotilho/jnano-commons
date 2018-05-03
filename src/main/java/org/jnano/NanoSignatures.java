@@ -51,4 +51,17 @@ public class NanoSignatures {
         return DataUtils.toHex(signature);
     }
 
+    public static boolean isValid(@Nonnull String address, @Nonnull String hash, @Nonnull String signature) {
+        byte[] publicKey = NanoAccounts.toPublicKey(address);
+        return isValid(publicKey, hash, signature);
+    }
+
+    public static boolean isValid(@Nonnull byte[] publicKey, @Nonnull String hash, @Nonnull String signature) {
+        try {
+            return ED25519.checkvalid(DataUtils.toByteArray(signature), DataUtils.toByteArray(hash), publicKey);
+        } catch (IllegalArgumentException e) {
+            return false;
+        }
+    }
+
 }

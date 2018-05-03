@@ -199,7 +199,7 @@ class ED25519 {
         return new BigInteger(out).and(un);
     }
 
-    static BigInteger[] decodepoint(byte[] s) throws Exception {
+    static BigInteger[] decodepoint(byte[] s) {
         byte[] ybyte = new byte[s.length];
         for (int i = 0; i < s.length; i++) {
             ybyte[i] = s[s.length - 1 - i];
@@ -216,15 +216,15 @@ class ED25519 {
         }
         BigInteger[] P = {x, y};
         if (!isoncurve(P))
-            throw new Exception("decoding point that is not on curve");
+            throw new IllegalArgumentException("decoding point that is not on curve");
         return P;
     }
 
-    static boolean checkvalid(byte[] s, byte[] m, byte[] pk) throws Exception {
+    static boolean checkvalid(byte[] s, byte[] m, byte[] pk) {
         if (s.length != b / 4)
-            throw new Exception("signature length is wrong");
+            throw new IllegalArgumentException("signature length is wrong");
         if (pk.length != b / 8)
-            throw new Exception("public-key length is wrong");
+            throw new IllegalArgumentException("public-key length is wrong");
         // System.out.println("checkvalid open with s="+test.getHex(s)+"
         // m="+test.getHex(m)+" pk="+test.getHex(pk));
         byte[] Rbyte = Arrays.copyOfRange(s, 0, b / 8);

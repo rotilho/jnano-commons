@@ -8,6 +8,10 @@ public final class NanoPOWs {
     private NanoPOWs() {
     }
 
+    public static boolean isValid(String hash, String pow) {
+        return isValid(DataUtils.toByteArray(hash), DataUtils.reverse(DataUtils.toByteArray(pow.toUpperCase())));
+    }
+
     public static String perform(String hash) {
         Random random = new Random();
         byte[] byteArray = DataUtils.toByteArray(hash);
@@ -20,13 +24,19 @@ public final class NanoPOWs {
                 .get();
     }
 
-    public static boolean isValid(String hash, String pow) {
-        return isValid(DataUtils.toByteArray(hash), DataUtils.reverse(DataUtils.toByteArray(pow.toUpperCase())));
-    }
-
     private static boolean isValid(byte[] byteArrayHash, byte[] byteArrayPOW) {
         byte[] digested = DataUtils.reverse(Hashes.digest(8, byteArrayPOW, byteArrayHash));
         return overThreshold(digested);
+    }
+
+
+    private static boolean overThreshold(byte[] byteArray) {
+        long result = 0;
+        for (int i = 0; i < 8; i++) {
+            result <<= 8;
+            result |= (byteArray[i] & 0xFF);
+        }
+        return Long.compareUnsigned(result, 0xFFFFFFC000000000L) > 0;
     }
 
     private static Optional<byte[]> perform(Random random, byte[] byteArrayHash) {
@@ -39,14 +49,5 @@ public final class NanoPOWs {
             }
         }
         return Optional.empty();
-    }
-
-    private static boolean overThreshold(byte[] byteArray) {
-        long result = 0;
-        for (int i = 0; i < 8; i++) {
-            result <<= 8;
-            result |= (byteArray[i] & 0xFF);
-        }
-        return Long.compareUnsigned(result, 0xFFFFFFC000000000L) > 0;
     }
 }

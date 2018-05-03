@@ -3,7 +3,8 @@ package org.jnano;
 import javax.annotation.Nonnull;
 import java.math.BigInteger;
 
-import static org.jnano.Hexes.toByteArray;
+import static org.jnano.DataUtils.radix;
+import static org.jnano.DataUtils.toByteArray;
 
 public final class NanoBlocks {
     private NanoBlocks() {
@@ -44,11 +45,8 @@ public final class NanoBlocks {
     }
 
     private static String hash(byte[]... byteArrays) {
-        return Hexes.toHex(Hashes.digest256(byteArrays));
+        return DataUtils.toHex(Hashes.digest256(byteArrays));
     }
 
-    private static String radix(BigInteger value) {
-        return StringUtils.leftPad(value.toString(16).toUpperCase(), 32);
-    }
 
 }

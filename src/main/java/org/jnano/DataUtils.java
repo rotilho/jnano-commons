@@ -4,7 +4,7 @@ import java.math.BigInteger;
 
 
 //TODO add methods with padding
-final class Hexes {
+final class DataUtils {
     /**
      * An array of hex characters used by the {@link #toHex(byte[])}
      * method.
@@ -75,4 +75,19 @@ final class Hexes {
         BigInteger b = new BigInteger(bin, 2);
         return b.toString(16).toUpperCase();
     }
+
+
+    static String radix(BigInteger value) {
+        return StringUtils.leftPad(value.toString(16).toUpperCase(), 32);
+    }
+
+    static byte[] reverse(byte[] b) {
+        byte[] bb = new byte[b.length];
+        for (int i = b.length; i > 0; i--) {
+            bb[b.length - i] = b[i - 1];
+        }
+        return bb;
+    }
+
+
 }

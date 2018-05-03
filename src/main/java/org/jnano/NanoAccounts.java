@@ -4,7 +4,7 @@ import javax.annotation.Nonnull;
 import java.nio.ByteBuffer;
 import java.util.Arrays;
 
-import static org.jnano.Hexes.*;
+import static org.jnano.DataUtils.*;
 import static org.jnano.Preconditions.checkArgument;
 
 public class NanoAccounts {
@@ -42,7 +42,7 @@ public class NanoAccounts {
 
         String binaryPublicKey = AddressEncodes.decode(encodedPublicKey).substring(4);
 
-        String hexPublicKey = StringUtils.leftPad(Hexes.toHex(binaryPublicKey), 64);
+        String hexPublicKey = StringUtils.leftPad(DataUtils.toHex(binaryPublicKey), 64);
 
         byte[] publicKey = toByteArray(hexPublicKey);
 
@@ -83,14 +83,6 @@ public class NanoAccounts {
         byte[] checksum = reverse(Hashes.digest(5, publicKey));
         String binaryChecksum = StringUtils.leftPad(toBinary(toHex(checksum)), checksum.length * 8);
         return AddressEncodes.encode(binaryChecksum);
-    }
-
-    private static byte[] reverse(byte[] b) {
-        byte[] bb = new byte[b.length];
-        for (int i = b.length; i > 0; i--) {
-            bb[b.length - i] = b[i - 1];
-        }
-        return bb;
     }
 
 }

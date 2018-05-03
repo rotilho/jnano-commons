@@ -1,7 +1,6 @@
 package org.jnano;
 
 import javax.annotation.Nonnull;
-import java.nio.ByteBuffer;
 import java.util.Arrays;
 
 import static org.jnano.DataUtils.*;
@@ -22,8 +21,8 @@ public class NanoAccounts {
         checkArgument(NanoSeeds.isValid(seed), () -> "Invalid seed " + seed);
         checkArgument(index >= 0, () -> "Invalid index " + index);
 
-        byte[] privateKey = Hashes.digest256(toByteArray(seed), ByteBuffer.allocate(4).putInt(index).array()); //digest 36 bytes into 32
-        byte[] publicKey = PublicKeys.generate(privateKey);
+        byte[] privateKey = Keys.generatePrivateKey(seed, index);
+        byte[] publicKey = Keys.generatePublicKey(privateKey);
         return toAddress(publicKey);
     }
 

@@ -51,7 +51,14 @@ public class NanoSignaturesTest {
     }
 
     @Test
-    public void shouldNotValidateSignature() {
+    public void shouldNotValidateWhenSignatureIsInvalid() {
         assertFalse(NanoSignatures.isValid(ADDRESS, HASH, SIGNATURE.replaceAll("1", "2")));
+    }
+
+    @Test
+    public void shouldNotValidateWhenSignatureDoesNotMatch() {
+        String wrongSignature = "9F0C933C8ADE004D808EA1985FA746A7E95BA2A38F867640F53EC8F180BDFE9E2C1268DEAD7C2664F356E37ABA362BC58E46DBA03E523A7B5A19E4B6EB12BB02";
+
+        assertFalse(NanoSignatures.isValid(ADDRESS, HASH, wrongSignature));
     }
 }

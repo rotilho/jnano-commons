@@ -1,82 +1,14 @@
 package org.jnano;
 
-import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
 
 import java.math.BigInteger;
-import java.security.Security;
 
 import static junit.framework.TestCase.assertEquals;
-import static junit.framework.TestCase.assertTrue;
 
 
-public class NanosTest {
-    private static final String SEED = "1234567890123456789012345678901234567890123456789012345678901234";
-    private static final String ADDRESS = "xrb_3iwi45me3cgo9aza9wx5f7rder37hw11xtc1ek8psqxw5oxb8cujjad6qp9y";
+public class NanoBlocksTest {
 
-    private String strongAlgorithms;
-
-    @Before
-    public void setUp() {
-        strongAlgorithms = Security.getProperty("securerandom.strongAlgorithms");
-    }
-
-    @After
-    public void tearDown() {
-        Security.setProperty("securerandom.strongAlgorithms", strongAlgorithms);
-    }
-
-
-    @Test
-    public void shouldGenerateSeedWhenAlgorithmIsAvailable() {
-        assertTrue(Nanos.generateSeed().matches(Nanos.SEED_REGEX));
-    }
-
-    @Test(expected = Nanos.ActionNotSupportedException.class)
-    public void shouldNotGenerateSeedWhenAlogirithmIsNotAvailable() {
-        Security.setProperty("securerandom.strongAlgorithms", "");
-
-        Nanos.generateSeed();
-    }
-
-    @Test
-    public void shouldCreateAddress() {
-        assertEquals(ADDRESS, Nanos.createAddress(SEED, 0));
-    }
-
-    @Test(expected = IllegalArgumentException.class)
-    public void shouldNotCreateAddressWhenSeedIsInvalid() {
-        Nanos.createAddress("", 0);
-    }
-
-    @Test(expected = IllegalArgumentException.class)
-    public void shouldNotCreateAddressWhenIndexIsBelowZero() {
-        Nanos.createAddress(SEED, -1);
-    }
-
-
-    @Test
-    public void shouldConvertPublicKeyToAddress() {
-        // given
-        byte[] publicKey = Nanos.toPublicKey(ADDRESS);
-
-        // then
-        String address = Nanos.toAddress(publicKey);
-
-        // when
-        assertEquals(ADDRESS, address);
-    }
-
-    @Test(expected = IllegalArgumentException.class)
-    public void shouldNotConvertPublicKeyToAddressWhenPublicKeyHaveInvalidLength() {
-        Nanos.toAddress(new byte[1]);
-    }
-
-    @Test(expected = IllegalArgumentException.class)
-    public void shouldNotConvertAddressToPublicKeyWhenAddressIsInvalid() {
-        Nanos.toPublicKey(ADDRESS.substring(0, ADDRESS.length() - 1));
-    }
 
     @Test
     public void shouldHashOpenBlock() {
@@ -86,7 +18,7 @@ public class NanosTest {
         String account = "xrb_3t6k35gi95xu6tergt6p69ck76ogmitsa8mnijtpxm9fkcm736xtoncuohr3";
 
         //when
-        String hash = Nanos.hashOpenBlock(source, representative, account);
+        String hash = NanoBlocks.hashOpenBlock(source, representative, account);
 
         // then
         String expectedHash = "991CF190094C00F0B68E2E5F75F6BEE95A2E0BD93CEAA4A6734DB9F19B728948";
@@ -101,7 +33,7 @@ public class NanosTest {
         BigInteger balance = new BigInteger("337010421085160209006996005437231978653");
 
         // when
-        String hash = Nanos.hashSendBlock(previous, destination, balance);
+        String hash = NanoBlocks.hashSendBlock(previous, destination, balance);
 
         //then
         String expectedHash = "A170D51B94E00371ACE76E35AC81DC9405D5D04D4CEBC399AEACE07AE05DD293";
@@ -115,7 +47,7 @@ public class NanosTest {
         String source = "ED9554BD4D0F3BDCC8A7BDED5DEF09C503F4E94EF3698047441EFBBCC0D241F7";
 
         // when
-        String hash = Nanos.hashReceiveBlock(previous, source);
+        String hash = NanoBlocks.hashReceiveBlock(previous, source);
 
         // then
         String expectedHash = "49876A7B00159C2F6EEB33BEAEE07FC637F4A29DD9631DFFD3DA015DE2165FE6";
@@ -129,7 +61,7 @@ public class NanosTest {
         String representative = "xrb_18gmu6engqhgtjnppqam181o5nfhj4sdtgyhy36dan3jr9spt84rzwmktafc";
 
         // when
-        String hash = Nanos.hashChangeBlock(previous, representative);
+        String hash = NanoBlocks.hashChangeBlock(previous, representative);
 
         // then
         String expectedHash = "654FA425CEBFC9E7726089E4EDE7A105462D93DBC915FFB70B50909920A7D286";
@@ -146,7 +78,7 @@ public class NanosTest {
 //        String link = "AAAB4AEC6CE72307A0264EA1AC252FC2FECB6A91836DA4D5C0696E7BD6D6E657";
 //
 //        // when
-//        String hash = Nanos.hashStateBlock(account, previous, representative, balance, link);
+//        String hash = NanoBlocks.hashStateBlock(account, previous, representative, balance, link);
 //
 //        // then
 //        String expectedHash = "87DB846B0CF844D605EAE06B79D3F9C0C4BEF8DC685CF8916C6A38E1E8CC9896";

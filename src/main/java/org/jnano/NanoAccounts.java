@@ -1,40 +1,14 @@
 package org.jnano;
 
 import javax.annotation.Nonnull;
-import java.math.BigInteger;
 import java.nio.ByteBuffer;
-import java.security.NoSuchAlgorithmException;
-import java.security.SecureRandom;
 import java.util.Arrays;
 
 import static org.jnano.Hexes.*;
 import static org.jnano.Preconditions.checkArgument;
 
-public final class Nanos {
-    public static final String SEED_REGEX = "^[A-Z0-9]{64}$";
+public class NanoAccounts {
     public static final String ADDRESS_REGEX = "^(xrb_)[13456789abcdefghijkmnopqrstuwxyz]{60}$";
-
-    private Nanos() {
-    }
-
-    /**
-     * Generate seed using SecureRandom
-     *
-     * @return random 32 bytes seed
-     * @throws ActionNotSupportedException Strong SecureRandom is not available
-     * @see SecureRandom#getInstanceStrong()
-     */
-    @Nonnull
-    public static String generateSeed() {
-        try {
-            SecureRandom secureRandom = SecureRandom.getInstanceStrong();
-            byte[] seed = new byte[32];
-            secureRandom.nextBytes(seed);
-            return toHex(seed);
-        } catch (NoSuchAlgorithmException e) {
-            throw new ActionNotSupportedException("Seed generation not supported", e);
-        }
-    }
 
     /**
      * Deterministically create address from a seed in a given index
@@ -45,7 +19,7 @@ public final class Nanos {
      */
     @Nonnull
     public static String createAddress(@Nonnull String seed, int index) {
-        checkArgument(seed.matches(SEED_REGEX), () -> "Invalid seed " + seed);
+        checkArgument(NanoSeeds.isValid(seed), () -> "Invalid seed " + seed);
         checkArgument(index >= 0, () -> "Invalid index " + index);
 
         byte[] privateKey = Hashes.digest256(toByteArray(seed), ByteBuffer.allocate(4).putInt(index).array()); //digest 36 bytes into 32
@@ -61,7 +35,7 @@ public final class Nanos {
      */
     @Nonnull
     public static byte[] toPublicKey(@Nonnull String address) {
-        checkArgument(address.matches(ADDRESS_REGEX), () -> "Invalid address " + address);
+        checkArgument(isValid(address), () -> "Invalid address " + address);
 
         String encodedPublicKey = address.substring(4, 56);
         String encodedChecksum = address.substring(56);
@@ -96,41 +70,8 @@ public final class Nanos {
         return "xrb_" + encodedPublicKey + encodedChecksum;
     }
 
-    @Nonnull
-    public static String hashOpenBlock(@Nonnull String source, @Nonnull String representative, @Nonnull String account) {
-        return hash(toByteArray(source), toPublicKey(representative), toPublicKey(account));
-    }
-
-    @Nonnull
-    public static String hashSendBlock(@Nonnull String previous, @Nonnull String destination, @Nonnull BigInteger balance) {
-        String hexBalance = toHex(balance);
-        return hash(toByteArray(previous), toPublicKey(destination), toByteArray(hexBalance));
-    }
-
-    @Nonnull
-    public static String hashReceiveBlock(@Nonnull String previous, @Nonnull String source) {
-        return hash(toByteArray(previous), toByteArray(source));
-    }
-
-    @Nonnull
-    public static String hashChangeBlock(@Nonnull String previous, @Nonnull String representative) {
-        return hash(toByteArray(previous), toPublicKey(representative));
-    }
-
-//    @Nonnull
-//    public static String hashStateBlock(@Nonnull String account, @Nonnull String previous, @Nonnull String representative, @Nonnull BigInteger balance, @Nonnull String link) {
-//        String hexBalance = toHex(balance);
-//        return hash(
-//                toPublicKey(account),
-//                toByteArray(previous),
-//                toPublicKey(representative),
-//                toByteArray(hexBalance),
-//                link.startsWith("xrb_") ? toPublicKey(link) : toByteArray(link)
-//        );
-//    }
-
-    private static String hash(byte[]... byteArrays) {
-        return Hexes.toHex(Hashes.digest256(byteArrays));
+    public static boolean isValid(String address) {
+        return address.matches(ADDRESS_REGEX);
     }
 
     private static void checkEncodedChecksum(String expectedEncodedChecksum, byte[] publicKey) {
@@ -152,9 +93,4 @@ public final class Nanos {
         return bb;
     }
 
-    public static class ActionNotSupportedException extends RuntimeException {
-        private ActionNotSupportedException(String message, Throwable cause) {
-            super(message, cause);
-        }
-    }
 }

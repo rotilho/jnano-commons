@@ -2,6 +2,8 @@ package org.jnano;
 
 import java.math.BigInteger;
 
+
+//TODO add methods with padding
 final class Hexes {
     /**
      * An array of hex characters used by the {@link #toHex(byte[])}
@@ -72,5 +74,9 @@ final class Hexes {
     static String toHex(String bin) {
         BigInteger b = new BigInteger(bin, 2);
         return b.toString(16).toUpperCase();
+    }
+
+    static String toHex(BigInteger value) {
+        return StringUtils.leftPad(value.toString(16).toUpperCase(), 32);
     }
 }

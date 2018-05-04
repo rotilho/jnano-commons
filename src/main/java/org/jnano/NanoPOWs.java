@@ -1,15 +1,13 @@
 package org.jnano;
 
+import java.nio.ByteBuffer;
+import java.nio.ByteOrder;
 import java.util.Optional;
 import java.util.Random;
 import java.util.stream.Stream;
 
 public final class NanoPOWs {
     private NanoPOWs() {
-    }
-
-    public static boolean isValid(String hash, String pow) {
-        return isValid(DataUtils.toByteArray(hash), DataUtils.reverse(DataUtils.toByteArray(pow.toUpperCase())));
     }
 
     public static String perform(String hash) {
@@ -24,19 +22,21 @@ public final class NanoPOWs {
                 .get();
     }
 
-    private static boolean isValid(byte[] byteArrayHash, byte[] byteArrayPOW) {
-        byte[] digested = DataUtils.reverse(Hashes.digest(8, byteArrayPOW, byteArrayHash));
-        return overThreshold(digested);
+    public static boolean isValid(String hash, String pow) {
+        return isValid(DataUtils.toByteArray(hash), DataUtils.reverse(DataUtils.toByteArray(pow)));
     }
 
 
-    private static boolean overThreshold(byte[] byteArray) {
-        long result = 0;
-        for (int i = 0; i < 8; i++) {
-            result <<= 8;
-            result |= (byteArray[i] & 0xFF);
-        }
-        return Long.compareUnsigned(result, 0xFFFFFFC000000000L) > 0;
+    private static boolean isValid(byte[] byteArrayHash, byte[] byteArrayPOW) {
+        byte[] work = Hashes.digest(8, byteArrayPOW, byteArrayHash);
+        return overThreshold(work);
+    }
+
+
+    private static boolean overThreshold(byte[] work) {
+        final ByteBuffer byteBuffer = ByteBuffer.wrap(work);
+        byteBuffer.order(ByteOrder.LITTLE_ENDIAN);
+        return Long.compareUnsigned(byteBuffer.getLong(), 0xFFFFFFC000000000L) >= 0;
     }
 
     private static Optional<byte[]> perform(Random random, byte[] byteArrayHash) {

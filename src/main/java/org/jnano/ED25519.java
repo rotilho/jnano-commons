@@ -53,13 +53,13 @@ class ED25519 {
     }
 
 
-    static byte[] createPublicKey(byte[] privateKey) {
+    protected static byte[] createPublicKey(byte[] privateKey) {
         EdDSAPrivateKeySpec key = new EdDSAPrivateKeySpec(privateKey, ED25519_BLAKE2B_CURVES_PEC);
         return key.getA().toByteArray();
     }
 
 
-    static byte[] sign(byte[] hash, byte[] privateKey) {
+    protected static byte[] sign(byte[] hash, byte[] privateKey) {
         try {
             EdDSAEngine edDSAEngine = new EdDSAEngine(MessageDigest.getInstance(Blake2b.BLAKE2_B_512));
             EdDSAPrivateKeySpec edDSAPrivateKeySpec = new EdDSAPrivateKeySpec(privateKey, ED25519_BLAKE2B_CURVES_PEC);
@@ -75,7 +75,7 @@ class ED25519 {
         }
     }
 
-    static boolean verify(byte[] signature, byte[] hash, byte[] publicKey) {
+    protected static boolean verify(byte[] signature, byte[] hash, byte[] publicKey) {
         try {
             EdDSAEngine edDSAEngine = new EdDSAEngine(MessageDigest.getInstance(Blake2b.BLAKE2_B_512));
             EdDSAPublicKeySpec edDSAPublicKeySpec = new EdDSAPublicKeySpec(publicKey, ED25519_BLAKE2B_CURVES_PEC);

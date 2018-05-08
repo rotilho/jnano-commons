@@ -7,7 +7,7 @@ import java.util.stream.Stream;
 import javax.annotation.Nonnull;
 
 public final class NanoPOWs {
-    private static final Long THRESHOLD = 0xFFFFFFC000000000L;
+//    private static final Long THRESHOLD = 0xFFFFFFC000000000L;
 
     private NanoPOWs() {
     }

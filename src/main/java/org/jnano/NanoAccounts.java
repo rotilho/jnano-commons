@@ -43,7 +43,7 @@ public class NanoAccounts {
 
         String binaryPublicKey = AddressEncodes.decode(encodedPublicKey).substring(4);
 
-        String hexPublicKey = StringUtils.leftPad(DataUtils.toHex(binaryPublicKey), 64);
+        String hexPublicKey = StringUtils.leftPad(toHex(binaryPublicKey), 64);
 
         byte[] publicKey = toByteArray(hexPublicKey);
 
@@ -55,7 +55,6 @@ public class NanoAccounts {
     /**
      * Create address to a given public key
      *
-     * @param publicKey
      * @return address
      */
     @Nonnull

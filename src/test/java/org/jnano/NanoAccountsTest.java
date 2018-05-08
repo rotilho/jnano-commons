@@ -57,7 +57,9 @@ public class NanoAccountsTest {
 
     @Test
     public void shouldValidateAddress() {
-        ADDRESSES.forEach(address -> assertTrue(NanoAccounts.isValid(ADDRESS)));
+        for (String address : ADDRESSES) {
+            assertTrue(NanoAccounts.isValid(address));
+        }
     }
 
     @Test

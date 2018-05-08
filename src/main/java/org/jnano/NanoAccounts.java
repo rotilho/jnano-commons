@@ -1,9 +1,14 @@
 package org.jnano;
 
-import javax.annotation.Nonnull;
+import java.nio.ByteBuffer;
 import java.util.Arrays;
 
-import static org.jnano.DataUtils.*;
+import javax.annotation.Nonnull;
+
+import static org.jnano.DataUtils.reverse;
+import static org.jnano.DataUtils.toBinary;
+import static org.jnano.DataUtils.toByteArray;
+import static org.jnano.DataUtils.toHex;
 import static org.jnano.Preconditions.checkArgument;
 
 public class NanoAccounts {
@@ -12,8 +17,6 @@ public class NanoAccounts {
     /**
      * Deterministically create address from a seed in a given index
      *
-     * @param seed
-     * @param index
      * @return Nano address (xrb_1111111111111111111111111111111111111111111111111111hifc8npp)
      */
     @Nonnull
@@ -21,15 +24,14 @@ public class NanoAccounts {
         checkArgument(NanoSeeds.isValid(seed), () -> "Invalid seed " + seed);
         checkArgument(index >= 0, () -> "Invalid index " + index);
 
-        byte[] privateKey = Keys.generatePrivateKey(seed, index);
-        byte[] publicKey = Keys.generatePublicKey(privateKey);
+        byte[] privateKey = Hashes.digest256(toByteArray(seed), ByteBuffer.allocate(4).putInt(index).array());
+        byte[] publicKey = ED25519.createPublicKey(privateKey);
         return toAddress(publicKey);
     }
 
     /**
      * Extract public key from a Address
      *
-     * @param address
      * @return public key
      */
     @Nonnull
@@ -69,7 +71,7 @@ public class NanoAccounts {
         return "xrb_" + encodedPublicKey + encodedChecksum;
     }
 
-    public static boolean isValid(String address) {
+    public static boolean isValid(@Nonnull String address) {
         return address.matches(ADDRESS_REGEX);
     }
 

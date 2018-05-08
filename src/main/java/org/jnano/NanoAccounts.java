@@ -12,7 +12,7 @@ import static org.jnano.DataUtils.toHex;
 import static org.jnano.Preconditions.checkArgument;
 
 public class NanoAccounts {
-    public static final String ADDRESS_REGEX = "^(xrb_)[13456789abcdefghijkmnopqrstuwxyz]{60}$";
+    public static final String ADDRESS_REGEX = "^(xrb_|nano_)[13456789abcdefghijkmnopqrstuwxyz]{60}$";
 
     /**
      * Deterministically create address from a seed in a given index
@@ -38,8 +38,8 @@ public class NanoAccounts {
     public static byte[] toPublicKey(@Nonnull String address) {
         checkArgument(isValid(address), () -> "Invalid address " + address);
 
-        String encodedPublicKey = address.substring(4, 56);
-        String encodedChecksum = address.substring(56);
+        String encodedPublicKey = address.startsWith("nano_") ? address.substring(5, 57) : address.substring(4, 56);
+        String encodedChecksum = address.substring(address.length() - 8);
 
         String binaryPublicKey = AddressEncodes.decode(encodedPublicKey).substring(4);
 
@@ -67,7 +67,7 @@ public class NanoAccounts {
         String encodedPublicKey = AddressEncodes.encode(binaryPublicKey);
 
         //return the address prefixed with xrb_ and suffixed with
-        return "xrb_" + encodedPublicKey + encodedChecksum;
+        return "nano_" + encodedPublicKey + encodedChecksum;
     }
 
     public static boolean isValid(@Nonnull String address) {

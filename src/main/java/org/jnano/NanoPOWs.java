@@ -1,12 +1,12 @@
 package org.jnano;
 
-import java.nio.ByteBuffer;
-import java.nio.ByteOrder;
 import java.util.Optional;
 import java.util.Random;
 import java.util.stream.Stream;
 
 public final class NanoPOWs {
+    private static final Long THRESHOLD = 0xFFFFFFC000000000L;
+
     private NanoPOWs() {
     }
 
@@ -17,7 +17,6 @@ public final class NanoPOWs {
                 .filter(Optional::isPresent)
                 .map(Optional::get)
                 .findAny()
-                .map(DataUtils::toHex)
                 .map(String::toLowerCase)
                 .get();
     }
@@ -28,24 +27,19 @@ public final class NanoPOWs {
 
 
     private static boolean isValid(byte[] byteArrayHash, byte[] byteArrayPOW) {
-        byte[] work = Hashes.digest(8, byteArrayPOW, byteArrayHash);
-        return overThreshold(work);
+        throw new UnsupportedOperationException("Validation is not implemented yet");
+//        byte[] work = Hashes.digest(8, byteArrayPOW, byteArrayHash);
+//        long uWork = ByteBuffer.wrap(work).order(ByteOrder.LITTLE_ENDIAN).getLong();
+//        return Long.compareUnsigned(uWork, THRESHOLD) >= 0;
     }
 
-
-    private static boolean overThreshold(byte[] work) {
-        final ByteBuffer byteBuffer = ByteBuffer.wrap(work);
-        byteBuffer.order(ByteOrder.LITTLE_ENDIAN);
-        return Long.compareUnsigned(byteBuffer.getLong(), 0xFFFFFFC000000000L) >= 0;
-    }
-
-    private static Optional<byte[]> perform(Random random, byte[] byteArrayHash) {
+    private static Optional<String> perform(Random random, byte[] byteArrayHash) {
         byte[] byteArrayPOW = new byte[8];
         random.nextBytes(byteArrayPOW);
         for (byte b = -128; b < 127; b++) {
             byteArrayPOW[7] = b;
             if (isValid(byteArrayHash, byteArrayPOW)) {
-                return Optional.of(DataUtils.reverse(byteArrayPOW));
+                return Optional.of(DataUtils.toHex(DataUtils.reverse(byteArrayPOW)));
             }
         }
         return Optional.empty();

@@ -6,10 +6,10 @@ import java.util.stream.Stream;
 
 import static java.lang.String.valueOf;
 
-final class AddressEncodes {
+final class AccountEncodes {
     private static final Alphabet ALPHABET = new Alphabet();
 
-    private AddressEncodes() {
+    private AccountEncodes() {
     }
 
     public static String decode(String encoded) {

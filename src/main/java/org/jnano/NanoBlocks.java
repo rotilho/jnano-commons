@@ -9,6 +9,7 @@ import static org.jnano.DataUtils.toByteArray;
 public final class NanoBlocks {
     public final static String MAIN_NET_GENESIS = "991CF190094C00F0B68E2E5F75F6BEE95A2E0BD93CEAA4A6734DB9F19B728948";
 
+    private static final String HASH_REGEX = "([0-9A-Z]){64}";
     private final static byte[] STATE_BLOCK_PREAMBLE = toByteArray("0000000000000000000000000000000000000000000000000000000000000006");
 
     private NanoBlocks() {
@@ -49,6 +50,10 @@ public final class NanoBlocks {
 
     private static String hash(byte[]... byteArrays) {
         return DataUtils.toHex(Hashes.digest256(byteArrays));
+    }
+
+    public static boolean isValid(@Nonnull String hash) {
+        return hash.matches(HASH_REGEX);
     }
 
 

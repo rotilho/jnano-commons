@@ -5,70 +5,38 @@ import org.junit.Test;
 import java.util.Arrays;
 import java.util.List;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
 
 public class NanoAccountsTest {
-    private static final String SEED = "1234567890123456789012345678901234567890123456789012345678901234";
-    private static final String ADDRESS = "nano_3iwi45me3cgo9aza9wx5f7rder37hw11xtc1ek8psqxw5oxb8cujjad6qp9y";
-    private static final String OLD_ADDRESS = "xrb_3iwi45me3cgo9aza9wx5f7rder37hw11xtc1ek8psqxw5oxb8cujjad6qp9y";
-    private static final List<String> ADDRESSES = Arrays.asList(ADDRESS, OLD_ADDRESS);
+    private static final byte[] PRIVATE_KEY = NanoKeys.createPrivateKey("1234567890123456789012345678901234567890123456789012345678901234", 0);
+    private static final String ACCOUNT = "nano_3iwi45me3cgo9aza9wx5f7rder37hw11xtc1ek8psqxw5oxb8cujjad6qp9y";
+    private static final String OLD_ACCOUNT = "xrb_3iwi45me3cgo9aza9wx5f7rder37hw11xtc1ek8psqxw5oxb8cujjad6qp9y";
+    private static final List<String> ACCOUNTS = Arrays.asList(ACCOUNT, OLD_ACCOUNT);
 
     @Test
-    public void shouldCreateAddress() {
-        assertEquals(ADDRESS, NanoAccounts.createAddress(SEED, 0));
+    public void shouldCreateAccount() {
+        assertEquals(ACCOUNT, NanoAccounts.createAccount(PRIVATE_KEY));
     }
 
     @Test(expected = IllegalArgumentException.class)
-    public void shouldNotCreateAddressWhenSeedIsInvalid() {
-        NanoAccounts.createAddress("", 0);
-    }
-
-    @Test(expected = IllegalArgumentException.class)
-    public void shouldNotCreateAddressWhenIndexIsBelowZero() {
-        NanoAccounts.createAddress(SEED, -1);
-    }
-
-
-    @Test
-    public void shouldConvertPublicKeyToAddress() {
-        for (String address : ADDRESSES) {
-            // given
-            byte[] publicKey = NanoAccounts.toPublicKey(address);
-
-            // then
-            String extractedAddress = NanoAccounts.toAddress(publicKey);
-
-            // when
-            assertEquals(ADDRESS, extractedAddress);
-        }
-    }
-
-    @Test(expected = IllegalArgumentException.class)
-    public void shouldNotConvertPublicKeyToAddressWhenPublicKeyHaveInvalidLength() {
-        NanoAccounts.toAddress(new byte[1]);
-    }
-
-    @Test(expected = IllegalArgumentException.class)
-    public void shouldNotConvertAddressToPublicKeyWhenAddressIsInvalid() {
-        NanoAccounts.toPublicKey(ADDRESS.substring(0, ADDRESS.length() - 1));
+    public void shouldNotConvertAccountToPublicKeyWhenAccountIsInvalid() {
+        NanoAccounts.toPublicKey(ACCOUNT.substring(0, ACCOUNT.length() - 1));
     }
 
     @Test
-    public void shouldValidateAddress() {
-        for (String address : ADDRESSES) {
-            assertTrue(NanoAccounts.isValid(address));
+    public void shouldValidateAccount() {
+        for (String account : ACCOUNTS) {
+            assertTrue(NanoAccounts.isValid(account));
         }
     }
 
     @Test
-    public void shouldValidateOldAddress() {
-        assertTrue(NanoAccounts.isValid(OLD_ADDRESS));
+    public void shouldValidateOldAccount() {
+        assertTrue(NanoAccounts.isValid(OLD_ACCOUNT));
     }
 
     @Test
-    public void shouldNotValidateAddress() {
-        assertFalse(NanoAccounts.isValid(ADDRESS.replace("nano_", "inv_")));
+    public void shouldNotValidateAccount() {
+        assertFalse(NanoAccounts.isValid(ACCOUNT.replace("nano_", "inv_")));
     }
 }

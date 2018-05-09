@@ -8,7 +8,6 @@ import java.util.Arrays;
 import static org.junit.Assert.assertTrue;
 
 public class SmokeTest {
-    private static final String PREVIOUS = "597395E83BD04DF8EF30AF04234EAAFE0606A883CF4AEAD2DB8196AAF5C4444F";
 
     @Test
     public void test() {

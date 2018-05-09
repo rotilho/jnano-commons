@@ -16,10 +16,6 @@ final class Preconditions {
         checkArgument(hash.length == 32, () -> "Invalid hash length");
     }
 
-    static void checkHash(String hash) {
-        checkArgument(hash.length() == 64, () -> "Invalid hash length");
-    }
-
     static void checkSignature(byte[] signature) {
         checkArgument(signature.length == 64, () -> "Invalid signature length");
     }

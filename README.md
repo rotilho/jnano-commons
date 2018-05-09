@@ -3,11 +3,43 @@
 [![Codacy Badge](https://api.codacy.com/project/badge/Coverage/9aba7b2a36f54a7689f7ffb798fb708c)](https://www.codacy.com/app/rotilho/jnano-commons?utm_source=github.com&utm_medium=referral&utm_content=rotilho/jnano-commons&utm_campaign=Badge_Coverage)
 
 # JNano Commons
-Provide easy-to-use Nano operations like Securely Generate Seed, Create Address, Perform PoW etc
+JNano provides a set of low level Nano operations that includes signing, seed generation, block hashing and account creation
 
-The initial code was kindely extract from [Rain](https://github.com/thehen101/Rain)
+## How to use it?
+All low level operations are handled by `NanoSeeds`, `NanoKeys`, `NanoAccounts`, `NanoBlocks`, `NanoPOWs`, and `NanoSignatures`
 
-**This repo is under development with some bugs listed below. Few free to contribute :)**
+```
+// create seed
+String seed = NanoSeeds.generateSeed();
+assertTrue(NanoSeeds.isValid(seed));
 
-### Currently we have few know bugs:
-- PoW validations are not working (which also affect PoW generation)
+// create private key
+byte[] privateKey = NanoKeys.createPrivateKey(seed, 0);
+byte[] publicKey = NanoKeys.createPublicKey(privateKey);
+
+// create account
+String account = NanoAccounts.createAccount(publicKey);
+assertTrue(NanoAccounts.isValid(account));
+
+// convert account to publicKey
+assertTrue(Arrays.equals(NanoAccounts.toPublicKey(account), publicKey));
+
+// create block hash
+String hash = NanoBlocks.hashStateBlock(
+        account, // account
+        NanoBlocks.MAIN_NET_GENESIS, //previous block
+        account, // representative
+        BigInteger.ONE, // balance
+        NanoAccounts.MAIN_NET_GENESIS_ACCOUNT // link: target address in this case
+);
+assertTrue(NanoBlocks.isValid(hash));
+
+// sign a block hash
+String signature = NanoSignatures.sign(privateKey, hash);
+assertTrue(NanoSignatures.isValid(account, hash, signature));
+```
+
+
+#### Special thanks to 
+- [Harry](https://github.com/thehen101) and his [Rain](https://github.com/thehen101/Rain) project which were used in the first implementation
+- [Scott Lanoue](https://github.com/schott12521) for all help

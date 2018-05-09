@@ -1,16 +1,15 @@
 package org.jnano;
 
+import javax.annotation.Nonnull;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
-
-import javax.annotation.Nonnull;
 
 import static org.jnano.DataUtils.toHex;
 
 public final class NanoSeeds {
     public static final String SEED_REGEX = "^[A-Z0-9]{64}$";
 
-    public NanoSeeds(){
+    private NanoSeeds() {
     }
 
     /**

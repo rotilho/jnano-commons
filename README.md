@@ -8,7 +8,7 @@ JNano provides a set of low level Nano operations that includes signing, seed ge
 ## How to use it?
 All low level operations are handled by `NanoSeeds`, `NanoKeys`, `NanoAccounts`, `NanoBlocks`, `NanoPOWs`, and `NanoSignatures`
 
-```
+```java
 // create seed
 String seed = NanoSeeds.generateSeed();
 assertTrue(NanoSeeds.isValid(seed));

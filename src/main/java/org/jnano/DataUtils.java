@@ -71,7 +71,7 @@ final class DataUtils {
     static String toBinary(String hex) {
         String value = new BigInteger(hex, 16).toString(2);
         String formatPad = "%" + (hex.length() * 4) + "s";
-        return (String.format(formatPad, value).replace(" ", ""));
+        return String.format(formatPad, value).replace(" ", "");
     }
 
     static String toHex(String bin) {

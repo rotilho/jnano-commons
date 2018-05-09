@@ -28,7 +28,7 @@ public class NanoSignaturesTest {
 
     @Test
     public void shouldNotValidateWhenSignatureIsInvalid() {
-        assertFalse(NanoSignatures.isValid(ADDRESS, HASH, SIGNATURE.replaceAll("1", "2")));
+        assertFalse(NanoSignatures.isValid(ADDRESS, HASH, SIGNATURE.substring(2)));
     }
 
     @Test

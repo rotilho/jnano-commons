@@ -2,7 +2,6 @@ package org.jnano;
 
 import com.rfksystems.blake2b.Blake2b;
 import com.rfksystems.blake2b.security.Blake2bProvider;
-
 import net.i2p.crypto.eddsa.EdDSAEngine;
 import net.i2p.crypto.eddsa.EdDSAPrivateKey;
 import net.i2p.crypto.eddsa.EdDSAPublicKey;
@@ -17,10 +16,11 @@ import net.i2p.crypto.eddsa.spec.EdDSAPrivateKeySpec;
 import net.i2p.crypto.eddsa.spec.EdDSAPublicKeySpec;
 
 import java.security.GeneralSecurityException;
-import java.security.InvalidKeyException;
 import java.security.MessageDigest;
 import java.security.Security;
 import java.util.Arrays;
+
+import static org.jnano.Preconditions.*;
 
 final class ED25519 {
     private static EdDSANamedCurveSpec ED25519_BLAKE2B_CURVES_PEC;
@@ -54,12 +54,15 @@ final class ED25519 {
 
 
     protected static byte[] createPublicKey(byte[] privateKey) {
+        checkKey(privateKey);
         EdDSAPrivateKeySpec key = new EdDSAPrivateKeySpec(privateKey, ED25519_BLAKE2B_CURVES_PEC);
         return key.getA().toByteArray();
     }
 
 
     protected static byte[] sign(byte[] hash, byte[] privateKey) {
+        checkHash(hash);
+        checkKey(privateKey);
         try {
             EdDSAEngine edDSAEngine = new EdDSAEngine(MessageDigest.getInstance(Blake2b.BLAKE2_B_512));
             EdDSAPrivateKeySpec edDSAPrivateKeySpec = new EdDSAPrivateKeySpec(privateKey, ED25519_BLAKE2B_CURVES_PEC);
@@ -68,14 +71,15 @@ final class ED25519 {
             edDSAEngine.setParameter(EdDSAEngine.ONE_SHOT_MODE);
             edDSAEngine.update(hash);
             return edDSAEngine.sign();
-        } catch (InvalidKeyException e) {
-            throw new IllegalArgumentException("Invalid private key", e);
         } catch (GeneralSecurityException e) {
             throw new IllegalStateException("It wasn't possible to sign " + Arrays.toString(hash), e);
         }
     }
 
     protected static boolean verify(byte[] signature, byte[] hash, byte[] publicKey) {
+        checkSignature(signature);
+        checkHash(hash);
+        checkKey(publicKey);
         try {
             EdDSAEngine edDSAEngine = new EdDSAEngine(MessageDigest.getInstance(Blake2b.BLAKE2_B_512));
             EdDSAPublicKeySpec edDSAPublicKeySpec = new EdDSAPublicKeySpec(publicKey, ED25519_BLAKE2B_CURVES_PEC);
@@ -84,8 +88,6 @@ final class ED25519 {
             edDSAEngine.setParameter(EdDSAEngine.ONE_SHOT_MODE);
             edDSAEngine.update(hash);
             return edDSAEngine.verify(signature);
-        } catch (InvalidKeyException e) {
-            throw new IllegalArgumentException("Invalid public key", e);
         } catch (GeneralSecurityException e) {
             throw new IllegalStateException("It wasn't possible to verify " + Arrays.toString(hash), e);
         }

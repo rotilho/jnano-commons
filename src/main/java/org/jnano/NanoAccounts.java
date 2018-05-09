@@ -1,15 +1,11 @@
 package org.jnano;
 
-import java.nio.ByteBuffer;
-import java.util.Arrays;
-
 import javax.annotation.Nonnull;
+import java.nio.ByteBuffer;
 
-import static org.jnano.DataUtils.reverse;
-import static org.jnano.DataUtils.toBinary;
-import static org.jnano.DataUtils.toByteArray;
-import static org.jnano.DataUtils.toHex;
+import static org.jnano.DataUtils.*;
 import static org.jnano.Preconditions.checkArgument;
+import static org.jnano.Preconditions.checkKey;
 
 public final class NanoAccounts {
     public static final String ADDRESS_REGEX = "^(xrb_|nano_)[13456789abcdefghijkmnopqrstuwxyz]{60}$";
@@ -62,7 +58,7 @@ public final class NanoAccounts {
      */
     @Nonnull
     public static String toAddress(@Nonnull byte[] publicKey) {
-        checkArgument(publicKey.length == 32, () -> "Invalid public key" + Arrays.toString(publicKey));
+        checkKey(publicKey);
 
         String binaryPublicKey = StringUtils.leftPad(toBinary(toHex(publicKey)), 260); //we get the address by picking
 

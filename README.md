@@ -3,10 +3,12 @@
 [![Codacy Badge](https://api.codacy.com/project/badge/Coverage/9aba7b2a36f54a7689f7ffb798fb708c)](https://www.codacy.com/app/rotilho/jnano-commons?utm_source=github.com&utm_medium=referral&utm_content=rotilho/jnano-commons&utm_campaign=Badge_Coverage)
 
 # JNano Commons
-JNano provides a set of low level Nano operations that includes signing, seed generation, block hashing and account creation
+JNano provides a set of low level Nano operations that includes signing, seed generation, block hashing and account creation.
+
+**IMPORTANT!** `NanoPOWs` is not implemented yet.
 
 ## How to use it?
-All low level operations are handled by `NanoSeeds`, `NanoKeys`, `NanoAccounts`, `NanoBlocks`, `NanoPOWs`, and `NanoSignatures`
+All low level operations are handled by `NanoSeeds`, `NanoKeys`, `NanoAccounts`, `NanoBlocks`, `NanoPOWs`, and `NanoSignatures`.
 
 ```java
 // create seed

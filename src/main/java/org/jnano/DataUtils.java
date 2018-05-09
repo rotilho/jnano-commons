@@ -25,7 +25,7 @@ final class DataUtils {
      * @param bytes An array of bytes to be represented as a string.
      * @return A string representation of the passed byte array.
      */
-    protected static String toHex(byte[] bytes) {
+    static String toHex(byte[] bytes) {
         char[] hexChars = new char[bytes.length * 2];
         for (int j = 0; j < bytes.length; j++) {
             int v = bytes[j] & 0xFF;
@@ -44,7 +44,7 @@ final class DataUtils {
      * @param s A string containing hex bytes.
      * @return A byte array containing the bytes of a passed string.
      */
-    protected static byte[] toByteArray(String s) {
+    static byte[] toByteArray(String s) {
         int len = s.length();
         byte[] data = new byte[len / 2];
         for (int i = 0; i < len; i += 2) {
@@ -68,23 +68,23 @@ final class DataUtils {
      * @param hex A string containing valid hex characters.
      * @return A binary representation of the passed string.
      */
-    protected static String toBinary(String hex) {
+    static String toBinary(String hex) {
         String value = new BigInteger(hex, 16).toString(2);
         String formatPad = "%" + (hex.length() * 4) + "s";
         return (String.format(formatPad, value).replace(" ", ""));
     }
 
-    protected static String toHex(String bin) {
+    static String toHex(String bin) {
         BigInteger b = new BigInteger(bin, 2);
         return b.toString(16).toUpperCase();
     }
 
 
-    protected static String radix(BigInteger value) {
+    static String radix(BigInteger value) {
         return StringUtils.leftPad(value.toString(16).toUpperCase(), 32);
     }
 
-    protected static byte[] reverse(byte[] b) {
+    static byte[] reverse(byte[] b) {
         byte[] bb = new byte[b.length];
         for (int i = b.length; i > 0; i--) {
             bb[b.length - i] = b[i - 1];

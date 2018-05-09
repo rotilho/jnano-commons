@@ -22,7 +22,7 @@ import java.security.MessageDigest;
 import java.security.Security;
 import java.util.Arrays;
 
-class ED25519 {
+final class ED25519 {
     private static EdDSANamedCurveSpec ED25519_BLAKE2B_CURVES_PEC;
 
     static {

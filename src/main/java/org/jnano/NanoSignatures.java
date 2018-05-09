@@ -2,7 +2,7 @@ package org.jnano;
 
 import javax.annotation.Nonnull;
 
-public class NanoSignatures {
+public final class NanoSignatures {
     private NanoSignatures() {
     }
 

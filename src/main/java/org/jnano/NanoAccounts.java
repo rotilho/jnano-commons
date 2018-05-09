@@ -11,8 +11,11 @@ import static org.jnano.DataUtils.toByteArray;
 import static org.jnano.DataUtils.toHex;
 import static org.jnano.Preconditions.checkArgument;
 
-public class NanoAccounts {
+public final class NanoAccounts {
     public static final String ADDRESS_REGEX = "^(xrb_|nano_)[13456789abcdefghijkmnopqrstuwxyz]{60}$";
+
+    private NanoAccounts() {
+    }
 
     /**
      * Deterministically create address from a seed in a given index

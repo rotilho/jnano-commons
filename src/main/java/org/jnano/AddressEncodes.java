@@ -6,7 +6,7 @@ import java.util.stream.Stream;
 
 import static java.lang.String.valueOf;
 
-class AddressEncodes {
+final class AddressEncodes {
     private static final Alphabet ALPHABET = new Alphabet();
 
     private AddressEncodes() {

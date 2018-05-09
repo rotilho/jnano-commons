@@ -11,6 +11,9 @@ final class DataUtils {
      */
     private static final char[] HEX_ARRAY = "0123456789ABCDEF".toCharArray();
 
+    private DataUtils() {
+    }
+
     /**
      * Converts an array of bytes into their String representation.
      * Note that there are no "0x" prefixes, just the value of the

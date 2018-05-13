@@ -1,13 +1,14 @@
 package com.rotilho.jnano.commons;
 
-import javax.annotation.Nonnull;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
+
+import javax.annotation.Nonnull;
 
 import static com.rotilho.jnano.commons.DataUtils.toHex;
 
 public final class NanoSeeds {
-    public static final String SEED_REGEX = "^[A-Z0-9]{64}$";
+    private static final String SEED_REGEX = "^[A-Z0-9]{64}$";
 
     private NanoSeeds() {
     }
@@ -25,7 +26,7 @@ public final class NanoSeeds {
             SecureRandom secureRandom = SecureRandom.getInstanceStrong();
             byte[] seed = new byte[32];
             secureRandom.nextBytes(seed);
-            return DataUtils.toHex(seed);
+            return toHex(seed);
         } catch (NoSuchAlgorithmException e) {
             throw new NanoSeeds.ActionNotSupportedException("Seed generation not supported", e);
         }

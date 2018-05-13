@@ -1,9 +1,6 @@
-package org.jnano;
+package com.rotilho.jnano.commons;
 
 import javax.annotation.Nonnull;
-
-import static org.jnano.Preconditions.checkArgument;
-import static org.jnano.Preconditions.checkKey;
 
 public final class NanoSignatures {
     private static final String SIGNATURE_REGEX = "([0-9A-Z]){128}";
@@ -16,7 +13,7 @@ public final class NanoSignatures {
      */
     @Nonnull
     public static String sign(@Nonnull byte[] privateKey, @Nonnull String hash) {
-        checkKey(privateKey);
+        Preconditions.checkKey(privateKey);
         byte[] signature = ED25519.sign(DataUtils.toByteArray(hash), privateKey);
         return DataUtils.toHex(signature);
     }
@@ -32,6 +29,6 @@ public final class NanoSignatures {
     }
 
     private static void checkHash(String hash) {
-        checkArgument(NanoBlocks.isValid(hash), () -> "Invalid hash " + hash);
+        Preconditions.checkArgument(NanoBlocks.isValid(hash), () -> "Invalid hash " + hash);
     }
 }

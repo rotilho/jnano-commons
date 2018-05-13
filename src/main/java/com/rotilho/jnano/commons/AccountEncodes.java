@@ -1,4 +1,4 @@
-package org.jnano;
+package com.rotilho.jnano.commons;
 
 import java.util.HashMap;
 import java.util.stream.Collectors;

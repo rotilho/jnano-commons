@@ -1,4 +1,4 @@
-package org.jnano;
+package com.rotilho.jnano.commons;
 
 import com.rfksystems.blake2b.Blake2b;
 import com.rfksystems.blake2b.security.Blake2bProvider;
@@ -20,7 +20,7 @@ import java.security.MessageDigest;
 import java.security.Security;
 import java.util.Arrays;
 
-import static org.jnano.Preconditions.*;
+import static com.rotilho.jnano.commons.Preconditions.*;
 
 final class ED25519 {
     private static EdDSANamedCurveSpec ED25519_BLAKE2B_CURVES_PEC;

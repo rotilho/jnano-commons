@@ -1,4 +1,4 @@
-package org.jnano;
+package com.rotilho.jnano.commons;
 
 import org.junit.Test;
 

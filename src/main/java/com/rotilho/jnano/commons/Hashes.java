@@ -1,4 +1,4 @@
-package org.jnano;
+package com.rotilho.jnano.commons;
 
 import com.rfksystems.blake2b.Blake2b;
 

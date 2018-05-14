@@ -13,4 +13,4 @@ after_success:
   - wget -O ~/codacy-coverage-reporter-assembly-latest.jar $(curl https://api.github.com/repos/codacy/codacy-coverage-reporter/releases/latest | jq -r .assets[0].browser_download_url)
   - java -jar ~/codacy-coverage-reporter-assembly-latest.jar report -l Java -r build/reports/jacoco/test/jacocoTestReport.xml
 
-  - ./gradlew clean build javadoc sourcesJar uploadArchives -PnexusUsername="$NEXUS_USER_NAME" -PnexusPassword="$NEXUS_PASSWORD'
+  - ./gradlew clean build javadoc sourcesJar uploadArchives -PnexusUsername="$NEXUS_USER_NAME" -PnexusPassword="$NEXUS_PASSWORD"

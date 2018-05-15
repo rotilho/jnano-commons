@@ -39,7 +39,7 @@ modifyPom {
     project {
         name 'Nano Commons'
         description 'JNano provides a set of low level Nano operations that includes signing, seed generation, block hashing and account creation.'
-        url 'https://github.com/rotilho/jnano-common'
+        url 'https://github.com/rotilho/jnano-commons'
         packaging 'jar'
         licenses {
             license {

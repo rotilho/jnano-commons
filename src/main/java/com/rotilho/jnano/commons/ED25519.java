@@ -21,9 +21,9 @@ import java.security.MessageDigest;
 import java.security.Security;
 import java.util.Arrays;
 
-import static com.rotilho.jnano.commons.NanoPreconditions.checkHash;
-import static com.rotilho.jnano.commons.NanoPreconditions.checkKey;
-import static com.rotilho.jnano.commons.NanoPreconditions.checkSignature;
+import static com.rotilho.jnano.commons.Preconditions.checkHash;
+import static com.rotilho.jnano.commons.Preconditions.checkKey;
+import static com.rotilho.jnano.commons.Preconditions.checkSignature;
 
 final class ED25519 {
     private static EdDSANamedCurveSpec ED25519_BLAKE2B_CURVES_PEC;

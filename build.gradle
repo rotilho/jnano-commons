@@ -1,7 +1,6 @@
 group 'com.rotilho.jnano'
 version '1.0.1-SNAPSHOT'
 
-apply plugin: 'maven-publish'
 apply plugin: 'java'
 apply plugin: 'jacoco'
 apply plugin: 'com.bmuschko.nexus'

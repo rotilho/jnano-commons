@@ -17,7 +17,7 @@ public final class NanoAccounts {
 
     @Nonnull
     public static String createAccount(@Nonnull byte[] publicKey) {
-        NanoPreconditions.checkKey(publicKey);
+        Preconditions.checkKey(publicKey);
 
         String binaryPublicKey = StringUtils.leftPad(toBinary(toHex(publicKey)), 260);
         String encodedChecksum = calculateEncodedChecksum(publicKey);
@@ -32,7 +32,7 @@ public final class NanoAccounts {
      */
     @Nonnull
     public static byte[] toPublicKey(@Nonnull String account) {
-        NanoPreconditions.checkArgument(isValid(account), () -> "Invalid account " + account);
+        Preconditions.checkArgument(isValid(account), () -> "Invalid account " + account);
         return extractPublicKey(account);
     }
 

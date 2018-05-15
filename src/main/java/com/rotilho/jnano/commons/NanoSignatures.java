@@ -13,7 +13,7 @@ public final class NanoSignatures {
      */
     @Nonnull
     public static String sign(@Nonnull byte[] privateKey, @Nonnull String hash) {
-        NanoPreconditions.checkKey(privateKey);
+        Preconditions.checkKey(privateKey);
         byte[] signature = ED25519.sign(DataUtils.toByteArray(hash), privateKey);
         return DataUtils.toHex(signature);
     }
@@ -29,6 +29,6 @@ public final class NanoSignatures {
     }
 
     private static void checkHash(String hash) {
-        NanoPreconditions.checkArgument(NanoBlocks.isValid(hash), () -> "Invalid hash " + hash);
+        Preconditions.checkArgument(NanoBlocks.isValid(hash), () -> "Invalid hash " + hash);
     }
 }

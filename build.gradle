@@ -1,8 +1,9 @@
 group 'com.rotilho.jnano'
-version '1.0.0'
+version '1.0.1-SNAPSHOT'
 
 apply plugin: 'java'
 apply plugin: 'jacoco'
+apply plugin: 'com.bmuschko.nexus'
 
 sourceCompatibility = 1.8
 
@@ -23,8 +24,6 @@ jacocoTestReport {
         html.enabled false
     }
 }
-
-apply plugin: 'com.bmuschko.nexus'
 
 buildscript {
     repositories {
@@ -53,6 +52,14 @@ modifyPom {
             url 'https://github.com/rotilho/jnano-commons'
             connection 'scm:git:https://github.com/rotilho/jnano-commons.git'
             developerConnection 'scm:git:https://github.com/rotilho/jnano-commons.git'
+        }
+
+        developers {
+            developer {
+                id 'rotilho'
+                name 'Felipe Rotilho'
+                email 'felipe@rotilho.com'
+            }
         }
     }
 }

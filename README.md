@@ -8,6 +8,9 @@ JNano provides a set of low level Nano operations that includes signing, seed ge
 **IMPORTANT!** `NanoPOWs` is not implemented yet.
 
 ## How to use it?
+
+`compile 'com.rotilho.jnano:jnano-commons:1.0.0`
+
 All low level operations are handled by `NanoSeeds`, `NanoKeys`, `NanoAccounts`, `NanoBlocks`, `NanoPOWs`, and `NanoSignatures`.
 
 ```java

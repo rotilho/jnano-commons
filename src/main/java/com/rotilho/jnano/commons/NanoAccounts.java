@@ -2,7 +2,10 @@ package com.rotilho.jnano.commons;
 
 import javax.annotation.Nonnull;
 
-import static com.rotilho.jnano.commons.DataUtils.*;
+import static com.rotilho.jnano.commons.DataUtils.reverse;
+import static com.rotilho.jnano.commons.DataUtils.toBinary;
+import static com.rotilho.jnano.commons.DataUtils.toByteArray;
+import static com.rotilho.jnano.commons.DataUtils.toHex;
 
 public final class NanoAccounts {
     public final static String MAIN_NET_GENESIS_ACCOUNT = "xrb_3t6k35gi95xu6tergt6p69ck76ogmitsa8mnijtpxm9fkcm736xtoncuohr3";
@@ -14,7 +17,7 @@ public final class NanoAccounts {
 
     @Nonnull
     public static String createAccount(@Nonnull byte[] publicKey) {
-        Preconditions.checkKey(publicKey);
+        NanoPreconditions.checkKey(publicKey);
 
         String binaryPublicKey = StringUtils.leftPad(toBinary(toHex(publicKey)), 260);
         String encodedChecksum = calculateEncodedChecksum(publicKey);
@@ -29,7 +32,7 @@ public final class NanoAccounts {
      */
     @Nonnull
     public static byte[] toPublicKey(@Nonnull String account) {
-        Preconditions.checkArgument(isValid(account), () -> "Invalid account " + account);
+        NanoPreconditions.checkArgument(isValid(account), () -> "Invalid account " + account);
         return extractPublicKey(account);
     }
 

@@ -2,6 +2,7 @@ package com.rotilho.jnano.commons;
 
 import com.rfksystems.blake2b.Blake2b;
 import com.rfksystems.blake2b.security.Blake2bProvider;
+
 import net.i2p.crypto.eddsa.EdDSAEngine;
 import net.i2p.crypto.eddsa.EdDSAPrivateKey;
 import net.i2p.crypto.eddsa.EdDSAPublicKey;
@@ -20,7 +21,9 @@ import java.security.MessageDigest;
 import java.security.Security;
 import java.util.Arrays;
 
-import static com.rotilho.jnano.commons.Preconditions.*;
+import static com.rotilho.jnano.commons.NanoPreconditions.checkHash;
+import static com.rotilho.jnano.commons.NanoPreconditions.checkKey;
+import static com.rotilho.jnano.commons.NanoPreconditions.checkSignature;
 
 final class ED25519 {
     private static EdDSANamedCurveSpec ED25519_BLAKE2B_CURVES_PEC;

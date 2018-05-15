@@ -1,7 +1,8 @@
 package com.rotilho.jnano.commons;
 
-import javax.annotation.Nonnull;
 import java.nio.ByteBuffer;
+
+import javax.annotation.Nonnull;
 
 import static com.rotilho.jnano.commons.DataUtils.toByteArray;
 
@@ -10,8 +11,8 @@ public final class NanoKeys {
     }
 
     public static byte[] createPrivateKey(@Nonnull String seed, int index) {
-        Preconditions.checkArgument(NanoSeeds.isValid(seed), () -> "Invalid seed " + seed);
-        Preconditions.checkArgument(index >= 0, () -> "Invalid index " + index);
+        NanoPreconditions.checkArgument(NanoSeeds.isValid(seed), () -> "Invalid seed " + seed);
+        NanoPreconditions.checkArgument(index >= 0, () -> "Invalid index " + index);
         return Hashes.digest256(toByteArray(seed), ByteBuffer.allocate(4).putInt(index).array());
     }
 

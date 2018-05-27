@@ -1,7 +1,8 @@
 package com.rotilho.jnano.commons;
 
-import javax.annotation.Nonnull;
 import java.math.BigInteger;
+
+import javax.annotation.Nonnull;
 
 public final class NanoBlocks {
     public final static String MAIN_NET_GENESIS = "991CF190094C00F0B68E2E5F75F6BEE95A2E0BD93CEAA4A6734DB9F19B728948";
@@ -41,7 +42,7 @@ public final class NanoBlocks {
                 DataUtils.toByteArray(StringUtils.leftPad(previous, 64)),
                 NanoAccounts.toPublicKey(representative),
                 DataUtils.toByteArray(DataUtils.radix(balance)),
-                link.startsWith("xrb_") ? NanoAccounts.toPublicKey(link) : DataUtils.toByteArray(link)
+                link.startsWith("xrb_") || link.startsWith("nano_") ? NanoAccounts.toPublicKey(link) : DataUtils.toByteArray(link)
         );
     }
 

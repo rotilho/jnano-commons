@@ -154,4 +154,22 @@ public class NanoBlocksTest {
         assertEquals(expectedHash, hash);
     }
 
+    @Test
+    public void shouldHashChangeAndSendStateBlockWhenLinkHaveNanoPrefix() {
+        // given
+        String account = "xrb_3igf8hd4sjshoibbbkeitmgkp1o6ug4xads43j6e4gqkj5xk5o83j8ja9php";
+        String previous = "2A322FD5ACAF50C057A8CF5200A000CF1193494C79C786B579E0B4A7D10E5A1E";
+        String representative = "xrb_3p1asma84n8k84joneka776q4egm5wwru3suho9wjsfyuem8j95b3c78nw8j";
+        BigInteger balance = new BigInteger("1");
+        String link = "nano_1q3hqecaw15cjt7thbtxu3pbzr1eihtzzpzxguoc37bj1wc5ffoh7w74gi6p";
+
+        // when
+        String hash = NanoBlocks.hashStateBlock(account, previous, representative, balance, link);
+
+        // then
+        String expectedHash = "9664412A834F0C27056C7BC4A363FBAE86DF8EF51341A5A5EA14061727AE519F";
+        assertEquals(expectedHash, hash);
+    }
+
+
 }

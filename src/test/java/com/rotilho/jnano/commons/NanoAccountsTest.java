@@ -5,7 +5,9 @@ import org.junit.Test;
 import java.util.Arrays;
 import java.util.List;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
 
 public class NanoAccountsTest {
     private static final String SEED = "1234567890123456789012345678901234567890123456789012345678901234";
@@ -24,6 +26,16 @@ public class NanoAccountsTest {
 
         // then
         assertEquals(ACCOUNT, account);
+    }
+
+    @Test
+    public void shouldConvertAddressToPublicKey() {
+        //when
+        byte[] publicKey = NanoAccounts.toPublicKey(ACCOUNT);
+
+        // then
+        assertEquals(ACCOUNT, NanoAccounts.createAccount(publicKey));
+
     }
 
     @Test(expected = IllegalArgumentException.class)

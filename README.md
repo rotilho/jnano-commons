@@ -1,6 +1,7 @@
 [![Build Status](https://travis-ci.org/rotilho/jnano-commons.svg?branch=master)](https://travis-ci.org/rotilho/jnano-commons)
 [![Codacy Badge](https://api.codacy.com/project/badge/Grade/9aba7b2a36f54a7689f7ffb798fb708c)](https://www.codacy.com/app/rotilho/jnano-commons?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=rotilho/jnano-commons&amp;utm_campaign=Badge_Grade)
 [![Codacy Badge](https://api.codacy.com/project/badge/Coverage/9aba7b2a36f54a7689f7ffb798fb708c)](https://www.codacy.com/app/rotilho/jnano-commons?utm_source=github.com&utm_medium=referral&utm_content=rotilho/jnano-commons&utm_campaign=Badge_Coverage)
+[![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.rotilho.jnano/jnano-commons/badge.svg)](https://mvnrepository.com/artifact/com.rotilho.jnano/jnano-commons)
 
 # JNano Commons
 JNano provides a set of low level Nano operations that includes signing, seed generation, block hashing and account creation.

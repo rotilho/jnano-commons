@@ -16,7 +16,7 @@ All low level operations are handled by `NanoSeeds`, `NanoKeys`, `NanoAccounts`,
 
 ```java
 // create seed
-String seed = NanoSeeds.generateSeed();
+byte[] seed = NanoSeeds.generateSeed();
 assertTrue(NanoSeeds.isValid(seed));
 
 // create private key

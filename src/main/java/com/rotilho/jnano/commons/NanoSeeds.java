@@ -5,10 +5,7 @@ import java.security.SecureRandom;
 
 import javax.annotation.Nonnull;
 
-import static com.rotilho.jnano.commons.DataUtils.toHex;
-
 public final class NanoSeeds {
-    private static final String SEED_REGEX = "^[A-Z0-9]{64}$";
 
     private NanoSeeds() {
     }
@@ -21,19 +18,19 @@ public final class NanoSeeds {
      * @see SecureRandom#getInstanceStrong()
      */
     @Nonnull
-    public static String generateSeed() {
+    public static byte[] generateSeed() {
         try {
             SecureRandom secureRandom = SecureRandom.getInstanceStrong();
             byte[] seed = new byte[32];
             secureRandom.nextBytes(seed);
-            return toHex(seed);
+            return seed;
         } catch (NoSuchAlgorithmException e) {
             throw new NanoSeeds.ActionNotSupportedException("Seed generation not supported", e);
         }
     }
 
-    public static boolean isValid(@Nonnull String seed) {
-        return seed.matches(SEED_REGEX);
+    public static boolean isValid(@Nonnull byte[] seed) {
+        return seed.length == 32;
     }
 
     public static class ActionNotSupportedException extends RuntimeException {

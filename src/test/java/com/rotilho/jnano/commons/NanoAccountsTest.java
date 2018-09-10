@@ -5,6 +5,7 @@ import org.junit.Test;
 import java.util.Arrays;
 import java.util.List;
 
+import static com.rotilho.jnano.commons.DataUtils.toByteArray;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
@@ -18,7 +19,7 @@ public class NanoAccountsTest {
     @Test
     public void shouldCreateAccount() {
         // given
-        byte[] privateKey = NanoKeys.createPrivateKey(SEED, 0);
+        byte[] privateKey = NanoKeys.createPrivateKey(toByteArray(SEED), 0);
         byte[] publicKey = NanoKeys.createPublicKey(privateKey);
 
         // when

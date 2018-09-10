@@ -12,7 +12,7 @@ public class SmokeTest {
     @Test
     public void test() {
         // create seed
-        String seed = NanoSeeds.generateSeed();
+        byte[] seed = NanoSeeds.generateSeed();
         assertTrue(NanoSeeds.isValid(seed));
 
         // create private key

@@ -2,16 +2,17 @@ package com.rotilho.jnano.commons;
 
 import java.math.BigInteger;
 
+import javax.annotation.Nonnull;
 
-//TODO add methods with padding
-final class DataUtils {
+
+public final class NanoHelper {
     /**
      * An array of hex characters used by the {@link #toHex(byte[])}
      * method.
      */
     private static final char[] HEX_ARRAY = "0123456789ABCDEF".toCharArray();
 
-    private DataUtils() {
+    private NanoHelper() {
     }
 
     /**
@@ -25,7 +26,8 @@ final class DataUtils {
      * @param bytes An array of bytes to be represented as a string.
      * @return A string representation of the passed byte array.
      */
-    static String toHex(byte[] bytes) {
+    @Nonnull
+    public static String toHex(@Nonnull byte[] bytes) {
         char[] hexChars = new char[bytes.length * 2];
         for (int j = 0; j < bytes.length; j++) {
             int v = bytes[j] & 0xFF;
@@ -44,7 +46,8 @@ final class DataUtils {
      * @param s A string containing hex bytes.
      * @return A byte array containing the bytes of a passed string.
      */
-    static byte[] toByteArray(String s) {
+    @Nonnull
+    public static byte[] toByteArray(@Nonnull String s) {
         int len = s.length();
         byte[] data = new byte[len / 2];
         for (int i = 0; i < len; i += 2) {
@@ -68,23 +71,26 @@ final class DataUtils {
      * @param hex A string containing valid hex characters.
      * @return A binary representation of the passed string.
      */
-    static String toBinary(String hex) {
+    @Nonnull
+    public static String toBinary(@Nonnull String hex) {
         String value = new BigInteger(hex, 16).toString(2);
         String formatPad = "%" + (hex.length() * 4) + "s";
         return String.format(formatPad, value).replace(" ", "");
     }
 
-    static String toHex(String bin) {
+    @Nonnull
+    public static String toHex(@Nonnull String bin) {
         BigInteger b = new BigInteger(bin, 2);
         return b.toString(16).toUpperCase();
     }
 
-
-    static String radix(BigInteger value) {
-        return StringUtils.leftPad(value.toString(16).toUpperCase(), 32);
+    @Nonnull
+    public static String radix(@Nonnull BigInteger value) {
+        return leftPad(value.toString(16).toUpperCase(), 32);
     }
 
-    static byte[] reverse(byte[] b) {
+    @Nonnull
+    public static byte[] reverse(@Nonnull byte[] b) {
         byte[] bb = new byte[b.length];
         for (int i = b.length; i > 0; i--) {
             bb[b.length - i] = b[i - 1];
@@ -92,5 +98,17 @@ final class DataUtils {
         return bb;
     }
 
+    @Nonnull
+    public static String leftPad(@Nonnull String str, int size) {
+        if (str.length() >= size) {
+            return str;
+        }
+
+        StringBuilder builder = new StringBuilder();
+        while (str.length() + builder.length() < size) {
+            builder.append("0");
+        }
+        return builder.append(str).toString();
+    }
 
 }

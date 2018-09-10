@@ -18,18 +18,18 @@ public final class NanoPOWs {
 
     @Nonnull
     public static String perform(@Nonnull String hash) {
-        byte[] byteArray = DataUtils.toByteArray(hash);
+        byte[] byteArray = NanoHelper.toByteArray(hash);
         return Stream.generate(() -> perform(byteArray))
                 .flatMap(identity())
-                .map(DataUtils::reverse)
-                .map(DataUtils::toHex)
+                .map(NanoHelper::reverse)
+                .map(NanoHelper::toHex)
                 .map(String::toLowerCase)
                 .findAny()
                 .get();
     }
 
     public static boolean isValid(@Nonnull String hash, @Nonnull String pow) {
-        return isValid(DataUtils.toByteArray(hash), DataUtils.reverse(DataUtils.toByteArray(pow)));
+        return isValid(NanoHelper.toByteArray(hash), NanoHelper.reverse(NanoHelper.toByteArray(pow)));
     }
 
 

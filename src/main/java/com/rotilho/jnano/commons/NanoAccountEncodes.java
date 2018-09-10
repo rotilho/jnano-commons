@@ -4,22 +4,23 @@ import java.util.HashMap;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
+import static com.rotilho.jnano.commons.NanoHelper.leftPad;
 import static java.lang.String.valueOf;
 
-final class AccountEncodes {
+final class NanoAccountEncodes {
     private static final Alphabet ALPHABET = new Alphabet();
 
-    private AccountEncodes() {
+    private NanoAccountEncodes() {
     }
 
-    public static String decode(String encoded) {
+    static String decode(String encoded) {
         return encoded.chars()
                 .mapToObj(c -> (char) c)
                 .map(ALPHABET::getBinary)
                 .collect(Collectors.joining());
     }
 
-    public static String encode(String decoded) {
+    static String encode(String decoded) {
         int codeSize = 5;
         return Stream.iterate(0, i -> i + codeSize)
                 .map(i -> decoded.substring(i, i + codeSize))
@@ -37,7 +38,7 @@ final class AccountEncodes {
 
         private Alphabet() {
             for (int i = 0; i < ACCOUNT_MAP.length; i++) {
-                String binary = StringUtils.leftPad(Integer.toBinaryString(i), 5);
+                String binary = leftPad(Integer.toBinaryString(i), 5);
                 CHARACTER_TABLE.put(binary, valueOf(ACCOUNT_MAP[i]));
                 BINARY_TABLE.put(ACCOUNT_MAP[i], binary);
             }

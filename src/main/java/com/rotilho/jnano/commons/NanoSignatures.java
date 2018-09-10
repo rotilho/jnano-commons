@@ -14,8 +14,8 @@ public final class NanoSignatures {
     @Nonnull
     public static String sign(@Nonnull byte[] privateKey, @Nonnull String hash) {
         Preconditions.checkKey(privateKey);
-        byte[] signature = ED25519.sign(DataUtils.toByteArray(hash), privateKey);
-        return DataUtils.toHex(signature);
+        byte[] signature = ED25519.sign(NanoHelper.toByteArray(hash), privateKey);
+        return NanoHelper.toHex(signature);
     }
 
     public static boolean isValid(@Nonnull String account, @Nonnull String hash, @Nonnull String signature) {
@@ -25,7 +25,7 @@ public final class NanoSignatures {
 
     public static boolean isValid(@Nonnull byte[] publicKey, @Nonnull String hash, @Nonnull String signature) {
         checkHash(hash);
-        return signature.matches(SIGNATURE_REGEX) && ED25519.verify(DataUtils.toByteArray(signature), DataUtils.toByteArray(hash), publicKey);
+        return signature.matches(SIGNATURE_REGEX) && ED25519.verify(NanoHelper.toByteArray(signature), NanoHelper.toByteArray(hash), publicKey);
     }
 
     private static void checkHash(String hash) {

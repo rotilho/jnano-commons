@@ -6,8 +6,6 @@
 # JNano Commons
 JNano provides a set of low level Nano operations that includes signing, seed generation, block hashing and account creation.
 
-**IMPORTANT!** `NanoPOWs` is not implemented yet.
-
 ## How to use it?
 
 `compile 'com.rotilho.jnano:jnano-commons:1.0.0`

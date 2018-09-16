@@ -26,7 +26,7 @@ public final class NanoMnemonics {
     }
 
     @Nonnull
-    public static List<String> createMnemonic(@Nonnull byte[] seed, @Nonnull NanoMnemonicLanguage language) {
+    public static List<String> createBip39Mnemonic(@Nonnull byte[] seed, @Nonnull NanoMnemonicLanguage language) {
         Preconditions.checkSeed(seed);
 
         int seedLength = seed.length * 8;
@@ -48,7 +48,7 @@ public final class NanoMnemonics {
 
 
     @Nonnull
-    public static byte[] toSeed(@Nonnull List<String> mnemonic, @Nonnull NanoMnemonicLanguage language) {
+    public static byte[] bip39ToSeed(@Nonnull List<String> mnemonic, @Nonnull NanoMnemonicLanguage language) {
         Preconditions.checkArgument(isValid(mnemonic, language), () -> "Invalid mnemonic");
         byte[] seedWithChecksum = extractSeedWithChecksum(mnemonic, language);
         try {

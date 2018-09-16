@@ -27,12 +27,12 @@ public class NanoMnemonicsTest {
 
     @Test
     public void shouldCreateMnemonic() {
-        assertEquals(MNEMONIC, NanoMnemonics.createMnemonic(SEED, NanoMnemonics.NanoMnemonicLanguage.ENGLISH));
+        assertEquals(MNEMONIC, NanoMnemonics.createBip39Mnemonic(SEED, NanoMnemonics.NanoMnemonicLanguage.ENGLISH));
     }
 
     @Test
     public void shouldConvertMnemonicToSeed() {
-        assertArrayEquals(SEED, NanoMnemonics.toSeed(MNEMONIC, NanoMnemonics.NanoMnemonicLanguage.ENGLISH));
+        assertArrayEquals(SEED, NanoMnemonics.bip39ToSeed(MNEMONIC, NanoMnemonics.NanoMnemonicLanguage.ENGLISH));
     }
 
     @Test
@@ -41,8 +41,8 @@ public class NanoMnemonicsTest {
         byte[] expectedSeed = NanoSeeds.generateSeed();
 
         // when
-        List<String> mnemonic = NanoMnemonics.createMnemonic(expectedSeed, NanoMnemonics.NanoMnemonicLanguage.ENGLISH);
-        byte[] seed = NanoMnemonics.toSeed(mnemonic, NanoMnemonics.NanoMnemonicLanguage.ENGLISH);
+        List<String> mnemonic = NanoMnemonics.createBip39Mnemonic(expectedSeed, NanoMnemonics.NanoMnemonicLanguage.ENGLISH);
+        byte[] seed = NanoMnemonics.bip39ToSeed(mnemonic, NanoMnemonics.NanoMnemonicLanguage.ENGLISH);
 
         // then
         assertArrayEquals(expectedSeed, seed);

@@ -65,3 +65,4 @@ If you want to reduce the time the privets keys or seed stay in memory you can u
 #### Special thanks to 
 - [Harry](https://github.com/thehen101) and his [Rain](https://github.com/thehen101/Rain) project which were used in the first implementation
 - [Scott Lanoue](https://github.com/schott12521) for all help
+- [NovaCrypto](https://github.com/NovaCrypto) and it [BIP39](https://github.com/NovaCrypto/BIP39) which were used as inspiration

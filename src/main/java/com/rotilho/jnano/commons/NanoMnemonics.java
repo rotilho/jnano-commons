@@ -111,7 +111,7 @@ public final class NanoMnemonics {
         return (((int) bytes[skip] & 0xff) << 16 |
                 ((int) bytes[skip + 1] & 0xff) << 8 |
                 (lowerBitsToRemove < 8
-                        ? ((int) bytes[skip + 2] & 0xff)
+                        ? (int) bytes[skip + 2] & 0xff
                         : 0)) >> lowerBitsToRemove & (1 << 11) - 1;
     }
 
@@ -127,7 +127,7 @@ public final class NanoMnemonics {
         {//byte 1
             byte valueInByte = bytes[skip + 1];
             final int i = 5 - bitSkip;
-            byte toWrite = (byte) (i > 0 ? (value << i) : (value >> -i));
+            byte toWrite = (byte) (i > 0 ? value << i : value >> -i);
             bytes[skip + 1] = (byte) (valueInByte | toWrite);
         }
 

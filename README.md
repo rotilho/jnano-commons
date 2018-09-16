@@ -10,7 +10,7 @@ JNano provides a set of low level Nano operations that includes signing, seed ge
 
 `compile 'com.rotilho.jnano:jnano-commons:1.0.0`
 
-All low level operations are handled by `NanoSeeds`, `NanoKeys`, `NanoAccounts`, `NanoBlocks`, `NanoPOWs`, and `NanoSignatures`.
+All low level operations are handled by `NanoSeeds`, `NanoKeys`, `NanoAccounts`, `NanoBlocks`, `NanoPOWs`, `NanoSignatures` and `NanoMnemonics`.
 
 ```java
 // create seed
@@ -43,6 +43,14 @@ String signature = NanoSignatures.sign(privateKey, hash);
 assertTrue(NanoSignatures.isValid(account, hash, signature));
 ```
 
+## Why not use string for Seed and Keys?
+As stated by [Baeldung](https://www.baeldung.com/java-storing-passwords), "strings in Java are immutable which means that we cannot change them using any high-level APIs. Any change on a String object will produce a new String, keeping the old one in memory.
+                                                                          
+Therefore, the password stored in a String will be available in memory until Garbage Collector clears it. We cannot control when it happens, but this period can be significantly longer than for regular objects since Strings are kept in a String Pool for re-usability purpose".
+
+Most of the time work with byte array will be enough but if there is the need to convert it to String you can easily achieve it using ``NanoHelper.toHex``.
+
+If you want to reduce the time the privets keys or seed stay in memory you can use ```NanoHelper.wipe``` and clear out the byte array content.
 
 #### Special thanks to 
 - [Harry](https://github.com/thehen101) and his [Rain](https://github.com/thehen101/Rain) project which were used in the first implementation

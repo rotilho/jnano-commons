@@ -1,7 +1,8 @@
 package com.rotilho.jnano.commons;
 
+import com.rotilho.jnano.commons.exception.ActionNotSupportedException;
+
 import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
 
 import java.security.Security;
@@ -9,12 +10,7 @@ import java.security.Security;
 import static org.junit.Assert.assertTrue;
 
 public class NanoSeedsTest {
-    private String strongAlgorithms;
-
-    @Before
-    public void setUp() {
-        strongAlgorithms = Security.getProperty("securerandom.strongAlgorithms");
-    }
+    private final static String strongAlgorithms = Security.getProperty("securerandom.strongAlgorithms");
 
     @After
     public void tearDown() {
@@ -27,8 +23,8 @@ public class NanoSeedsTest {
         assertTrue(NanoSeeds.isValid(NanoSeeds.generateSeed()));
     }
 
-    @Test(expected = NanoSeeds.ActionNotSupportedException.class)
-    public void shouldNotGenerateSeedWhenAlogirithmIsNotAvailable() {
+    @Test(expected = ActionNotSupportedException.class)
+    public void shouldNotGenerateSeedWhenAlgorithmIsNotAvailable() {
         Security.setProperty("securerandom.strongAlgorithms", "");
 
         NanoSeeds.generateSeed();

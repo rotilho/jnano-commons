@@ -1,6 +1,7 @@
 package com.rotilho.jnano.commons;
 
 import java.math.BigInteger;
+import java.util.Arrays;
 
 import javax.annotation.Nonnull;
 
@@ -109,6 +110,12 @@ public final class NanoHelper {
             builder.append("0");
         }
         return builder.append(str).toString();
+    }
+
+    @Nonnull
+    public static byte[] wipe(@Nonnull byte[] b) {
+        Arrays.fill(b, (byte) 0);
+        return b;
     }
 
 }

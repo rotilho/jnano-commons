@@ -23,4 +23,9 @@ final class Preconditions {
     static void checkKey(byte[] key) {
         checkArgument(key.length == 32, () -> "Invalid key length");
     }
+
+
+    static void checkSeed(byte[] seed) {
+        checkArgument(seed.length == 32, () -> "Invalid seed length");
+    }
 }

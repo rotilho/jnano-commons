@@ -8,7 +8,17 @@ JNano provides a set of low level Nano operations that includes signing, seed ge
 
 ## How to use it?
 
-`compile 'com.rotilho.jnano:jnano-commons:1.0.0`
+**Gradle**
+`compile 'com.rotilho.jnano:jnano-commons:1.2.0`
+
+**Maven**
+```xml
+<dependency>
+    <groupId>com.rotilho.jnano</groupId>
+    <artifactId>jnano-commons</artifactId>
+    <version>1.2.0</version>
+</dependency>
+```
 
 All low level operations are handled by `NanoSeeds`, `NanoKeys`, `NanoAccounts`, `NanoBlocks`, `NanoPOWs`, `NanoSignatures` and `NanoMnemonics`.
 

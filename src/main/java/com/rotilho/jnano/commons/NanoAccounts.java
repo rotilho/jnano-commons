@@ -1,6 +1,6 @@
 package com.rotilho.jnano.commons;
 
-import javax.annotation.Nonnull;
+import lombok.NonNull;
 
 import static com.rotilho.jnano.commons.NanoHelper.leftPad;
 import static com.rotilho.jnano.commons.NanoHelper.reverse;
@@ -16,8 +16,8 @@ public final class NanoAccounts {
     private NanoAccounts() {
     }
 
-    @Nonnull
-    public static String createAccount(@Nonnull byte[] publicKey) {
+    @NonNull
+    public static String createAccount(@NonNull byte[] publicKey) {
         Preconditions.checkKey(publicKey);
 
         String binaryPublicKey = leftPad(toBinary(toHex(publicKey)), 260);
@@ -26,18 +26,13 @@ public final class NanoAccounts {
         return "nano_" + encodedPublicKey + encodedChecksum;
     }
 
-    /**
-     * Extract public key from a account
-     *
-     * @return public key
-     */
-    @Nonnull
-    public static byte[] toPublicKey(@Nonnull String account) {
+    @NonNull
+    public static byte[] toPublicKey(@NonNull String account) {
         Preconditions.checkArgument(isValid(account), () -> "Invalid account " + account);
         return extractPublicKey(account);
     }
 
-    public static boolean isValid(@Nonnull String account) {
+    public static boolean isValid(@NonNull String account) {
         if (!account.matches(ACCOUNT_REGEX)) {
             return false;
         }

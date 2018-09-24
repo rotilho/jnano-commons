@@ -11,7 +11,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
-import javax.annotation.Nonnull;
+import lombok.NonNull;
 
 import static java.util.Arrays.copyOf;
 import static java.util.Collections.unmodifiableList;
@@ -25,8 +25,8 @@ public final class NanoMnemonics {
     private NanoMnemonics() {
     }
 
-    @Nonnull
-    public static List<String> createBip39Mnemonic(@Nonnull byte[] seed, @Nonnull NanoMnemonicLanguage language) {
+    @NonNull
+    public static List<String> createBip39Mnemonic(@NonNull byte[] seed, @NonNull NanoMnemonicLanguage language) {
         Preconditions.checkSeed(seed);
 
         int seedLength = seed.length * 8;
@@ -47,8 +47,8 @@ public final class NanoMnemonics {
     }
 
 
-    @Nonnull
-    public static byte[] bip39ToSeed(@Nonnull List<String> mnemonic, @Nonnull NanoMnemonicLanguage language) {
+    @NonNull
+    public static byte[] bip39ToSeed(@NonNull List<String> mnemonic, @NonNull NanoMnemonicLanguage language) {
         Preconditions.checkArgument(isValid(mnemonic, language), () -> "Invalid mnemonic");
         byte[] seedWithChecksum = extractSeedWithChecksum(mnemonic, language);
         try {
@@ -58,7 +58,7 @@ public final class NanoMnemonics {
         }
     }
 
-    public static boolean isValid(@Nonnull List<String> mnemonic, @Nonnull NanoMnemonicLanguage language) {
+    public static boolean isValid(@NonNull List<String> mnemonic, @NonNull NanoMnemonicLanguage language) {
         if (mnemonic.size() != 24 || !mnemonic.stream().allMatch(language::wordExists)) {
             return false;
         }
@@ -75,7 +75,7 @@ public final class NanoMnemonics {
         }
     }
 
-    private static byte[] extractSeedWithChecksum(List<String> mnemonic,  NanoMnemonicLanguage language) {
+    private static byte[] extractSeedWithChecksum(List<String> mnemonic, NanoMnemonicLanguage language) {
         int mnemonicSentenceLength = mnemonic.size();
 
         int seedWithChecksumLength = mnemonicSentenceLength * 11;

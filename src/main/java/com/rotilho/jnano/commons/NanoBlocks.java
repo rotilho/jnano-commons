@@ -2,7 +2,7 @@ package com.rotilho.jnano.commons;
 
 import java.math.BigInteger;
 
-import javax.annotation.Nonnull;
+import lombok.NonNull;
 
 import static com.rotilho.jnano.commons.NanoHelper.leftPad;
 
@@ -16,28 +16,28 @@ public final class NanoBlocks {
     }
 
 
-    @Nonnull
-    public static String hashOpenBlock(@Nonnull String source, @Nonnull String representative, @Nonnull String account) {
+    @NonNull
+    public static String hashOpenBlock(@NonNull String source, @NonNull String representative, @NonNull String account) {
         return hash(NanoHelper.toByteArray(source), NanoAccounts.toPublicKey(representative), NanoAccounts.toPublicKey(account));
     }
 
-    @Nonnull
-    public static String hashSendBlock(@Nonnull String previous, @Nonnull String destination, @Nonnull BigInteger balance) {
+    @NonNull
+    public static String hashSendBlock(@NonNull String previous, @NonNull String destination, @NonNull BigInteger balance) {
         return hash(NanoHelper.toByteArray(previous), NanoAccounts.toPublicKey(destination), NanoHelper.toByteArray(NanoHelper.radix(balance)));
     }
 
-    @Nonnull
-    public static String hashReceiveBlock(@Nonnull String previous, @Nonnull String source) {
+    @NonNull
+    public static String hashReceiveBlock(@NonNull String previous, @NonNull String source) {
         return hash(NanoHelper.toByteArray(previous), NanoHelper.toByteArray(source));
     }
 
-    @Nonnull
-    public static String hashChangeBlock(@Nonnull String previous, @Nonnull String representative) {
+    @NonNull
+    public static String hashChangeBlock(@NonNull String previous, @NonNull String representative) {
         return hash(NanoHelper.toByteArray(previous), NanoAccounts.toPublicKey(representative));
     }
 
-    @Nonnull
-    public static String hashStateBlock(@Nonnull String account, @Nonnull String previous, @Nonnull String representative, @Nonnull BigInteger balance, @Nonnull String link) {
+    @NonNull
+    public static String hashStateBlock(@NonNull String account, @NonNull String previous, @NonNull String representative, @NonNull BigInteger balance, @NonNull String link) {
         return hash(
                 STATE_BLOCK_PREAMBLE,
                 NanoAccounts.toPublicKey(account),
@@ -52,7 +52,7 @@ public final class NanoBlocks {
         return NanoHelper.toHex(Hashes.digest256(byteArrays));
     }
 
-    public static boolean isValid(@Nonnull String hash) {
+    public static boolean isValid(@NonNull String hash) {
         return hash.matches(HASH_REGEX);
     }
 

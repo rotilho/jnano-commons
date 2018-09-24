@@ -5,7 +5,7 @@ import com.rotilho.jnano.commons.exception.ActionNotSupportedException;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 
-import javax.annotation.Nonnull;
+import lombok.NonNull;
 
 public final class NanoSeeds {
 
@@ -19,7 +19,7 @@ public final class NanoSeeds {
      * @throws ActionNotSupportedException Strong SecureRandom is not available
      * @see SecureRandom#getInstanceStrong()
      */
-    @Nonnull
+    @NonNull
     public static byte[] generateSeed() {
         try {
             SecureRandom secureRandom = SecureRandom.getInstanceStrong();
@@ -31,7 +31,7 @@ public final class NanoSeeds {
         }
     }
 
-    public static boolean isValid(@Nonnull byte[] seed) {
+    public static boolean isValid(@NonNull byte[] seed) {
         return seed.length == 32;
     }
 }

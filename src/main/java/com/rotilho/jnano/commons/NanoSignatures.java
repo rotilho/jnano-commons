@@ -1,6 +1,6 @@
 package com.rotilho.jnano.commons;
 
-import javax.annotation.Nonnull;
+import lombok.NonNull;
 
 public final class NanoSignatures {
     private static final String SIGNATURE_REGEX = "([0-9A-Z]){128}";
@@ -8,22 +8,19 @@ public final class NanoSignatures {
     private NanoSignatures() {
     }
 
-    /**
-     * Sign the block hash
-     */
-    @Nonnull
-    public static String sign(@Nonnull byte[] privateKey, @Nonnull String hash) {
+    @NonNull
+    public static String sign(@NonNull byte[] privateKey, @NonNull String hash) {
         Preconditions.checkKey(privateKey);
         byte[] signature = ED25519.sign(NanoHelper.toByteArray(hash), privateKey);
         return NanoHelper.toHex(signature);
     }
 
-    public static boolean isValid(@Nonnull String account, @Nonnull String hash, @Nonnull String signature) {
+    public static boolean isValid(@NonNull String account, @NonNull String hash, @NonNull String signature) {
         byte[] publicKey = NanoAccounts.toPublicKey(account);
         return isValid(publicKey, hash, signature);
     }
 
-    public static boolean isValid(@Nonnull byte[] publicKey, @Nonnull String hash, @Nonnull String signature) {
+    public static boolean isValid(@NonNull byte[] publicKey, @NonNull String hash, @NonNull String signature) {
         checkHash(hash);
         return signature.matches(SIGNATURE_REGEX) && ED25519.verify(NanoHelper.toByteArray(signature), NanoHelper.toByteArray(hash), publicKey);
     }

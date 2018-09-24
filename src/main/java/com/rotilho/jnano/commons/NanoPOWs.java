@@ -5,7 +5,7 @@ import java.nio.ByteOrder;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.stream.Stream;
 
-import javax.annotation.Nonnull;
+import lombok.NonNull;
 
 import static java.util.function.Function.identity;
 
@@ -16,10 +16,11 @@ public final class NanoPOWs {
     private NanoPOWs() {
     }
 
-    @Nonnull
-    public static String perform(@Nonnull String hash) {
+    @NonNull
+    public static String perform(@NonNull String hash) {
         byte[] byteArray = NanoHelper.toByteArray(hash);
         return Stream.generate(() -> perform(byteArray))
+                .parallel()
                 .flatMap(identity())
                 .map(NanoHelper::reverse)
                 .map(NanoHelper::toHex)
@@ -28,12 +29,12 @@ public final class NanoPOWs {
                 .get();
     }
 
-    public static boolean isValid(@Nonnull String hash, @Nonnull String pow) {
+    public static boolean isValid(@NonNull String hash, @NonNull String pow) {
         return isValid(NanoHelper.toByteArray(hash), NanoHelper.reverse(NanoHelper.toByteArray(pow)));
     }
 
 
-    public static boolean isValid(@Nonnull byte[] byteArrayHash, @Nonnull byte[] byteArrayPOW) {
+    public static boolean isValid(@NonNull byte[] byteArrayHash, @NonNull byte[] byteArrayPOW) {
         byte[] work = Hashes.digest(8, byteArrayPOW, byteArrayHash);
         long uWork = ByteBuffer.wrap(work).order(ByteOrder.LITTLE_ENDIAN).getLong();
         return Long.compareUnsigned(uWork, THRESHOLD) >= 0;

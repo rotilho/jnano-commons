@@ -20,7 +20,7 @@ JNano provides a set of low level Nano operations that includes signing, seed ge
 </dependency>
 ```
 
-All low level operations are handled by `NanoSeeds`, `NanoKeys`, `NanoAccounts`, `NanoBlocks`, `NanoWorks`, `NanoSignatures` and `NanoMnemonics`.
+All low level operations are handled by `NanoSeeds`, `NanoKeys`, `NanoAccounts`, `NanoBlocks`, `NanoWorks`*, `NanoSignatures` and `NanoMnemonics`.
 
 ```java
 // create seed
@@ -52,6 +52,8 @@ assertTrue(NanoBlocks.isValid(hash));
 String signature = NanoSignatures.sign(privateKey, hash);
 assertTrue(NanoSignatures.isValid(account, hash, signature));
 ```
+
+\* Java use just CPU and calculate PoW with CPU is bloody slow. For production ready application please use a [work server](https://github.com/nanocurrency/nano-work-server).
 
 ## Why not use string for Seed and Keys?
 As stated by [Baeldung](https://www.baeldung.com/java-storing-passwords), "strings in Java are immutable which means that we cannot change them using any high-level APIs. Any change on a String object will produce a new String, keeping the old one in memory.

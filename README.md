@@ -20,7 +20,7 @@ JNano provides a set of low level Nano operations that includes signing, seed ge
 </dependency>
 ```
 
-All low level operations are handled by `NanoSeeds`, `NanoKeys`, `NanoAccounts`, `NanoBlocks`, `NanoPOWs`, `NanoSignatures` and `NanoMnemonics`.
+All low level operations are handled by `NanoSeeds`, `NanoKeys`, `NanoAccounts`, `NanoBlocks`, `NanoWorks`, `NanoSignatures` and `NanoMnemonics`.
 
 ```java
 // create seed

@@ -9,11 +9,11 @@ import lombok.NonNull;
 
 import static java.util.function.Function.identity;
 
-public final class NanoPOWs {
+public final class NanoWorks {
     private static final Long THRESHOLD = 0xFFFFFFC000000000L;
     private static final ThreadLocalRandom RANDOM = ThreadLocalRandom.current();
 
-    private NanoPOWs() {
+    private NanoWorks() {
     }
 
     @NonNull

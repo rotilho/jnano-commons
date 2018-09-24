@@ -16,7 +16,7 @@ plugins {
 }
 
 group 'com.rotilho.jnano'
-version '1.3.0'
+version '1.4.0-SNAPSHOT'
 
 sourceCompatibility = 1.8
 

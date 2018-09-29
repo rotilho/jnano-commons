@@ -16,13 +16,13 @@ public final class NanoSignatures {
     }
 
     public static boolean isValid(@NonNull String account, @NonNull String hash, @NonNull String signature) {
+        checkHash(hash);
         byte[] publicKey = NanoAccounts.toPublicKey(account);
-        return isValid(publicKey, hash, signature);
+        return signature.matches(SIGNATURE_REGEX) && isValid(publicKey, NanoHelper.toByteArray(hash), NanoHelper.toByteArray(signature));
     }
 
-    public static boolean isValid(@NonNull byte[] publicKey, @NonNull String hash, @NonNull String signature) {
-        checkHash(hash);
-        return signature.matches(SIGNATURE_REGEX) && ED25519.verify(NanoHelper.toByteArray(signature), NanoHelper.toByteArray(hash), publicKey);
+    public static boolean isValid(@NonNull byte[] publicKey, @NonNull byte[] hash, @NonNull byte[] signature) {
+        return ED25519.verify(signature, hash, publicKey);
     }
 
     private static void checkHash(String hash) {

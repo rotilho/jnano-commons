@@ -84,6 +84,11 @@ public final class NanoHelper {
     }
 
     @NonNull
+    public static BigInteger toBigInteger(@NonNull byte[] bytes) {
+        return new BigInteger(bytes);
+    }
+
+    @NonNull
     public static byte[] reverse(@NonNull byte[] b) {
         byte[] bb = new byte[b.length];
         for (int i = b.length; i > 0; i--) {

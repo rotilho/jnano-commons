@@ -11,8 +11,13 @@ public final class NanoSignatures {
     @NonNull
     public static String sign(@NonNull byte[] privateKey, @NonNull String hash) {
         Preconditions.checkKey(privateKey);
-        byte[] signature = ED25519.sign(NanoHelper.toByteArray(hash), privateKey);
-        return NanoHelper.toHex(signature);
+        return NanoHelper.toHex(sign(privateKey, NanoHelper.toByteArray(hash)));
+    }
+
+    @NonNull
+    public static byte[] sign(@NonNull byte[] privateKey, @NonNull byte[] hash) {
+        Preconditions.checkKey(privateKey);
+        return ED25519.sign(hash, privateKey);
     }
 
     public static boolean isValid(@NonNull String account, @NonNull String hash, @NonNull String signature) {

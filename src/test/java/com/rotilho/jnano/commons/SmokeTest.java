@@ -2,7 +2,6 @@ package com.rotilho.jnano.commons;
 
 import org.junit.Test;
 
-import java.math.BigInteger;
 import java.util.Arrays;
 
 import static org.junit.Assert.assertTrue;
@@ -31,7 +30,7 @@ public class SmokeTest {
                 account, // account
                 NanoBlocks.MAIN_NET_GENESIS, //previous block
                 account, // representative
-                BigInteger.ONE, // balance
+                NanoAmount.ofRaw("1"), // balance
                 NanoAccounts.MAIN_NET_GENESIS_ACCOUNT // link: target address in this case
         );
         assertTrue(NanoBlocks.isValid(hash));

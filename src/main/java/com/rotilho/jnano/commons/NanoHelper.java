@@ -79,11 +79,6 @@ public final class NanoHelper {
     }
 
     @NonNull
-    public static String radix(@NonNull BigInteger value) {
-        return leftPad(value.toString(16).toUpperCase(), 32);
-    }
-
-    @NonNull
     public static BigInteger toBigInteger(@NonNull byte[] bytes) {
         return new BigInteger(bytes);
     }
@@ -91,8 +86,10 @@ public final class NanoHelper {
     @NonNull
     public static byte[] toByteArray(@NonNull BigInteger bigInteger) {
         byte[] bytes = bigInteger.toByteArray();
-        byte[] tmp = new byte[32];
-        System.arraycopy(bytes, 0, tmp, tmp.length - bytes.length, bytes.length);
+        byte[] tmp = new byte[16];
+        int sourcePosition = (bytes.length <= 16) ? 0 : 1;
+        int bytesLength = (bytes.length <= 16) ? bytes.length : 16;
+        System.arraycopy(bytes, sourcePosition, tmp, tmp.length - bytesLength, bytesLength);
         return tmp;
     }
 

@@ -87,6 +87,10 @@ public class NanoAmount {
         return NanoAmount.of(amount, NanoUnit.RAW);
     }
 
+    public static NanoAmount ofByteArray(@NonNull byte[] amount) {
+        return NanoAmount.of(new BigDecimal(NanoHelper.toBigInteger(amount)), NanoUnit.RAW);
+    }
+
     public NanoAmount add(NanoAmount amount) {
         return NanoAmount.ofRaw(this.raw.add(amount.raw));
     }
@@ -137,6 +141,10 @@ public class NanoAmount {
 
     public BigDecimal toRaw() {
         return to(NanoUnit.RAW);
+    }
+
+    public byte[] toByteArray() {
+        return NanoHelper.toByteArray(raw.toBigInteger());
     }
 
     public String toString(@NonNull NanoUnit unit) {

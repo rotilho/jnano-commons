@@ -1,7 +1,5 @@
 package com.rotilho.jnano.commons;
 
-import java.math.BigInteger;
-
 import lombok.NonNull;
 import lombok.experimental.UtilityClass;
 
@@ -26,8 +24,8 @@ public final class NanoBlocks {
     }
 
     @NonNull
-    public static String hashSendBlock(@NonNull String previous, @NonNull String destination, @NonNull BigInteger balance) {
-        return toHex(hashSendBlock(NanoHelper.toByteArray(previous), NanoAccounts.toPublicKey(destination), NanoHelper.toByteArray(NanoHelper.radix(balance))));
+    public static String hashSendBlock(@NonNull String previous, @NonNull String destination, @NonNull NanoAmount balance) {
+        return toHex(hashSendBlock(NanoHelper.toByteArray(previous), NanoAccounts.toPublicKey(destination), balance.toByteArray()));
     }
 
     @NonNull
@@ -56,13 +54,13 @@ public final class NanoBlocks {
     }
 
     @NonNull
-    public static String hashStateBlock(@NonNull String account, @NonNull String previous, @NonNull String representative, @NonNull BigInteger balance, @NonNull String link) {
+    public static String hashStateBlock(@NonNull String account, @NonNull String previous, @NonNull String representative, @NonNull NanoAmount balance, @NonNull String link) {
         return toHex(
                 hashStateBlock(
                         NanoAccounts.toPublicKey(account),
                         NanoHelper.toByteArray(leftPad(previous, 64)),
                         NanoAccounts.toPublicKey(representative),
-                        NanoHelper.toByteArray(NanoHelper.radix(balance)),
+                        balance.toByteArray(),
                         link.startsWith("xrb_") || link.startsWith("nano_") ? NanoAccounts.toPublicKey(link) : NanoHelper.toByteArray(link)
                 )
         );

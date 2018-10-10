@@ -87,8 +87,8 @@ public final class NanoHelper {
     public static byte[] toByteArray(@NonNull BigInteger bigInteger) {
         byte[] bytes = bigInteger.toByteArray();
         byte[] tmp = new byte[16];
-        int sourcePosition = (bytes.length <= 16) ? 0 : 1;
-        int bytesLength = (bytes.length <= 16) ? bytes.length : 16;
+        int sourcePosition = bytes.length <= 16 ? 0 : 1;
+        int bytesLength = bytes.length <= 16 ? bytes.length : 16;
         System.arraycopy(bytes, sourcePosition, tmp, tmp.length - bytesLength, bytesLength);
         return tmp;
     }

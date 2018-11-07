@@ -1,9 +1,6 @@
 package com.rotilho.jnano.commons;
 
-import java.util.function.Function;
-
 import lombok.NonNull;
-import lombok.RequiredArgsConstructor;
 
 import static com.rotilho.jnano.commons.NanoHelper.leftPad;
 import static com.rotilho.jnano.commons.NanoHelper.reverse;
@@ -29,7 +26,7 @@ public final class NanoAccounts {
 
     @NonNull
     public static byte[] toPublicKey(@NonNull String account) {
-        return toPublicKey(NanoAccounts.BaseNanoAccountType.NANO, account);
+        return toPublicKey(NanoBaseAccountType.NANO, account);
     }
 
     @NonNull
@@ -39,7 +36,7 @@ public final class NanoAccounts {
     }
 
     public static boolean isValid(@NonNull String account) {
-        return isValid(NanoAccounts.BaseNanoAccountType.NANO, account);
+        return isValid(NanoBaseAccountType.NANO, account);
     }
 
     public static boolean isValid(@NonNull NanoAccountType type, @NonNull String account) {
@@ -62,31 +59,6 @@ public final class NanoAccounts {
         byte[] checksum = reverse(Hashes.digest(5, publicKey));
         String binaryChecksum = leftPad(toBinary(toHex(checksum)), checksum.length * 8);
         return NanoAccountEncodes.encode(binaryChecksum);
-    }
-
-    @RequiredArgsConstructor
-    public enum BaseNanoAccountType implements NanoAccountType {
-        NANO("^(xrb_|nano_)[13456789abcdefghijkmnopqrstuwxyz]{60}$", account -> account.startsWith("nano_") ? account.substring(5, 57) : account.substring(4, 56)),
-        BANANO("^(ban_)[13456789abcdefghijkmnopqrstuwxyz]{60}$", account -> account.substring(4, 56));
-
-        private final String regex;
-        private final Function<String, String> accountExtractor;
-
-        @Override
-        public String extractEncodedPublicKey(String account) {
-            return accountExtractor.apply(account);
-        }
-
-        @Override
-        public String regex() {
-            return regex;
-        }
-    }
-
-    public interface NanoAccountType {
-        String extractEncodedPublicKey(String account);
-
-        String regex();
     }
 
 }

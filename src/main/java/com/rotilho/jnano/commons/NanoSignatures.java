@@ -21,10 +21,10 @@ public final class NanoSignatures {
     }
 
     public static boolean isValid(@NonNull String account, @NonNull String hash, @NonNull String signature) {
-        return isValid(NanoAccounts.BaseNanoAccountType.NANO, account, hash, signature);
+        return isValid(NanoBaseAccountType.NANO, account, hash, signature);
     }
 
-    public static boolean isValid(@NonNull NanoAccounts.NanoAccountType type, @NonNull String account, @NonNull String hash, @NonNull String signature) {
+    public static boolean isValid(@NonNull NanoAccountType type, @NonNull String account, @NonNull String hash, @NonNull String signature) {
         checkHash(hash);
         byte[] publicKey = NanoAccounts.toPublicKey(type, account);
         return signature.matches(SIGNATURE_REGEX) && isValid(publicKey, NanoHelper.toByteArray(hash), NanoHelper.toByteArray(signature));

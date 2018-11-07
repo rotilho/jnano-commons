@@ -53,7 +53,7 @@ public class NanoAccountsTest {
 
     @Test
     public void shouldValidateBananoAccount() {
-        assertTrue(NanoAccounts.isValid(NanoAccounts.BaseNanoAccountType.BANANO, "ban_1bananobh5rat99qfgt1ptpieie5swmoth87thi74qgbfrij7dcgjiij94xr"));
+        assertTrue(NanoAccounts.isValid(NanoBaseAccountType.BANANO, "ban_1bananobh5rat99qfgt1ptpieie5swmoth87thi74qgbfrij7dcgjiij94xr"));
     }
 
     @Test

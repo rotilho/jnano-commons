@@ -21,13 +21,18 @@ public final class NanoSignatures {
     }
 
     public static boolean isValid(@NonNull String account, @NonNull String hash, @NonNull String signature) {
+        return isValid(NanoAccounts.BaseNanoAccountType.NANO, account, hash, signature);
+    }
+
+    public static boolean isValid(@NonNull NanoAccounts.NanoAccountType type, @NonNull String account, @NonNull String hash, @NonNull String signature) {
         checkHash(hash);
-        byte[] publicKey = NanoAccounts.toPublicKey(account);
+        byte[] publicKey = NanoAccounts.toPublicKey(type, account);
         return signature.matches(SIGNATURE_REGEX) && isValid(publicKey, NanoHelper.toByteArray(hash), NanoHelper.toByteArray(signature));
     }
 
+    // hash should moved to last parameter and receive a varargs. Maybe rename it to something else?
     public static boolean isValid(@NonNull byte[] publicKey, @NonNull byte[] hash, @NonNull byte[] signature) {
-        return ED25519.verify(signature, hash, publicKey);
+        return ED25519.verify(signature, hash.length == 32 ? hash : Hashes.digest256(hash), publicKey);
     }
 
     private static void checkHash(String hash) {

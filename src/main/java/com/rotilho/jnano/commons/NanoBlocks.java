@@ -15,7 +15,12 @@ public final class NanoBlocks {
 
     @NonNull
     public static String hashOpenBlock(@NonNull String source, @NonNull String representative, @NonNull String account) {
-        return toHex(hashOpenBlock(NanoHelper.toByteArray(source), NanoAccounts.toPublicKey(representative), NanoAccounts.toPublicKey(account)));
+        return hashOpenBlock(NanoAccounts.BaseNanoAccountType.NANO, source, representative, account);
+    }
+
+    @NonNull
+    public static String hashOpenBlock(@NonNull NanoAccounts.NanoAccountType type, @NonNull String source, @NonNull String representative, @NonNull String account) {
+        return toHex(hashOpenBlock(NanoHelper.toByteArray(source), NanoAccounts.toPublicKey(type, representative), NanoAccounts.toPublicKey(type, account)));
     }
 
     @NonNull
@@ -25,7 +30,12 @@ public final class NanoBlocks {
 
     @NonNull
     public static String hashSendBlock(@NonNull String previous, @NonNull String destination, @NonNull NanoAmount balance) {
-        return toHex(hashSendBlock(NanoHelper.toByteArray(previous), NanoAccounts.toPublicKey(destination), balance.toByteArray()));
+        return hashSendBlock(NanoAccounts.BaseNanoAccountType.NANO, previous, destination, balance);
+    }
+
+    @NonNull
+    public static String hashSendBlock(@NonNull NanoAccounts.NanoAccountType type, @NonNull String previous, @NonNull String destination, @NonNull NanoAmount balance) {
+        return toHex(hashSendBlock(NanoHelper.toByteArray(previous), NanoAccounts.toPublicKey(type, destination), balance.toByteArray()));
     }
 
     @NonNull
@@ -45,7 +55,12 @@ public final class NanoBlocks {
 
     @NonNull
     public static String hashChangeBlock(@NonNull String previous, @NonNull String representative) {
-        return toHex(hashChangeBlock(NanoHelper.toByteArray(previous), NanoAccounts.toPublicKey(representative)));
+        return hashChangeBlock(NanoAccounts.BaseNanoAccountType.NANO, previous, representative);
+    }
+
+    @NonNull
+    public static String hashChangeBlock(@NonNull NanoAccounts.NanoAccountType type, @NonNull String previous, @NonNull String representative) {
+        return toHex(hashChangeBlock(NanoHelper.toByteArray(previous), NanoAccounts.toPublicKey(type, representative)));
     }
 
     @NonNull
@@ -55,13 +70,18 @@ public final class NanoBlocks {
 
     @NonNull
     public static String hashStateBlock(@NonNull String account, @NonNull String previous, @NonNull String representative, @NonNull NanoAmount balance, @NonNull String link) {
+        return hashStateBlock(NanoAccounts.BaseNanoAccountType.NANO, account, previous, representative, balance, link);
+    }
+
+    @NonNull
+    public static String hashStateBlock(@NonNull NanoAccounts.NanoAccountType type, @NonNull String account, @NonNull String previous, @NonNull String representative, @NonNull NanoAmount balance, @NonNull String link) {
         return toHex(
                 hashStateBlock(
-                        NanoAccounts.toPublicKey(account),
+                        NanoAccounts.toPublicKey(type, account),
                         NanoHelper.toByteArray(leftPad(previous, 64)),
-                        NanoAccounts.toPublicKey(representative),
+                        NanoAccounts.toPublicKey(type, representative),
                         balance.toByteArray(),
-                        link.startsWith("xrb_") || link.startsWith("nano_") ? NanoAccounts.toPublicKey(link) : NanoHelper.toByteArray(link)
+                        NanoAccounts.isValid(type, link) ? NanoAccounts.toPublicKey(type, link) : NanoHelper.toByteArray(link)
                 )
         );
     }

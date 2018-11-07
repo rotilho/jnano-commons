@@ -81,7 +81,6 @@ final class ED25519 {
 
     static boolean verify(byte[] signature, byte[] hash, byte[] publicKey) {
         checkSignature(signature);
-        checkHash(hash);
         checkKey(publicKey);
         try {
             EdDSAEngine edDSAEngine = new EdDSAEngine(MessageDigest.getInstance(Blake2b.BLAKE2_B_512));

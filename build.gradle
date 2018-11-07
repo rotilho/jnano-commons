@@ -26,7 +26,7 @@ repositories {
 }
 
 dependencies {
-    compile 'com.rfksystems:blake2b:1.0.0'
+    compile 'com.rfksystems:blake2b:1.0.0' // migrate to alphazero/Blake2b
     compile 'net.i2p.crypto:eddsa:0.3.0'
 
     compileOnly 'org.projectlombok:lombok:1.18.2'

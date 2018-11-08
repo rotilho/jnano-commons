@@ -18,9 +18,6 @@ public class NanoAmount {
 
     public static NanoAmount of(@NonNull BigDecimal amount, @NonNull NanoUnit unit) {
         BigDecimal raw = amount.multiply(unit.getMultiplier());
-        if (raw.signum() < 0) {
-            throw new IllegalArgumentException("Amount(" + amount + ") can't be negative");
-        }
         if (raw.stripTrailingZeros().scale() > 0) {
             throw new IllegalArgumentException("Amount(" + amount + ") have raw decimals");
         }

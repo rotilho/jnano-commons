@@ -41,6 +41,17 @@ jacocoTestReport {
     }
 }
 
+publishing {
+    publications {
+        mavenJava(MavenPublication) {
+            from components.java
+        }
+    }
+    repositories {
+        mavenLocal()
+    }
+}
+
 modifyPom {
     project {
         name 'Nano Commons'

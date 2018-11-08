@@ -9,14 +9,14 @@ JNano provides a set of low level Nano operations that includes signing, seed ge
 ## How to use it?
 
 **Gradle**
-`compile 'com.rotilho.jnano:jnano-commons:1.3.0`
+`compile 'com.rotilho.jnano:jnano-commons:1.4.1`
 
 **Maven**
 ```xml
 <dependency>
     <groupId>com.rotilho.jnano</groupId>
     <artifactId>jnano-commons</artifactId>
-    <version>1.3.0</version>
+    <version>1.4.1</version>
 </dependency>
 ```
 
@@ -34,6 +34,10 @@ byte[] publicKey = NanoKeys.createPublicKey(privateKey);
 // create account
 String account = NanoAccounts.createAccount(publicKey);
 assertTrue(NanoAccounts.isValid(account));
+
+// by default Nano account type is used, but you can also use Banano
+String bananoAccount = NanoAccounts.createAccount(NanoBaseAccountType.BANANO, publicKey);
+assertTrue(NanoAccounts.isValid(NanoBaseAccountType.BANANO, account));
 
 // convert account to publicKey
 assertTrue(Arrays.equals(NanoAccounts.toPublicKey(account), publicKey));

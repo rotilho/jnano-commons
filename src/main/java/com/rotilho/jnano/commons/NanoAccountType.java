@@ -4,4 +4,6 @@ public interface NanoAccountType {
     String extractEncodedPublicKey(String account);
 
     String regex();
+
+    String prefix();
 }

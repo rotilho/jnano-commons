@@ -16,12 +16,17 @@ public final class NanoAccounts {
 
     @NonNull
     public static String createAccount(@NonNull byte[] publicKey) {
+        return createAccount(NanoBaseAccountType.NANO, publicKey);
+    }
+
+    @NonNull
+    public static String createAccount(@NonNull NanoAccountType type, @NonNull byte[] publicKey) {
         Preconditions.checkKey(publicKey);
 
         String binaryPublicKey = leftPad(toBinary(toHex(publicKey)), 260);
         String encodedChecksum = calculateEncodedChecksum(publicKey);
         String encodedPublicKey = NanoAccountEncodes.encode(binaryPublicKey);
-        return "nano_" + encodedPublicKey + encodedChecksum;
+        return type.prefix() + encodedPublicKey + encodedChecksum;
     }
 
     @NonNull

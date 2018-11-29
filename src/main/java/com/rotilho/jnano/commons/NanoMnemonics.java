@@ -7,7 +7,9 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -16,9 +18,6 @@ import lombok.NonNull;
 import static java.util.Arrays.copyOf;
 import static java.util.Collections.unmodifiableList;
 import static java.util.Collections.unmodifiableMap;
-import static java.util.stream.Collectors.toList;
-import static java.util.stream.Collectors.toMap;
-import static java.util.stream.IntStream.range;
 
 
 public final class NanoMnemonics {
@@ -37,10 +36,11 @@ public final class NanoMnemonics {
         int mnemonicSentenceLength = (seedLength + checksumLength) / 11;
 
         try {
-            return range(0, mnemonicSentenceLength)
-                    .map(i -> next11Bits(seedWithChecksum, i * 11))
-                    .mapToObj(language::getWord)
-                    .collect(toList());
+        	List<String> ret = new ArrayList<>();
+        	for (int i = 0; i < mnemonicSentenceLength; i++) {
+        		ret.add(language.getWord(next11Bits(seedWithChecksum, i * 11)));
+        	}
+        	return ret;
         } finally {
             NanoHelper.wipe(seedWithChecksum);
         }
@@ -81,11 +81,15 @@ public final class NanoMnemonics {
         int seedWithChecksumLength = mnemonicSentenceLength * 11;
         byte[] seedWithChecksum = new byte[(seedWithChecksumLength + 7) / 8];
 
-        List<Integer> mnemonicIndexes = mnemonic.stream()
-                .map(language::getIndex)
-                .collect(toList());
+        
+        List<Integer> mnemonicIndexes = new ArrayList<>();
+        for (String word: mnemonic) {
+        	mnemonicIndexes.add(language.getIndex(word));
+        }
 
-        range(0, mnemonicSentenceLength).forEach(i -> writeNext11(seedWithChecksum, mnemonicIndexes.get(i), i * 11));
+        for (int i = 0; i < mnemonicSentenceLength; i++) {
+        	writeNext11(seedWithChecksum, mnemonicIndexes.get(i), i * 11);
+        }
 
         return seedWithChecksum;
     }
@@ -144,12 +148,17 @@ public final class NanoMnemonics {
 
         private final List<String> dictionary;
         private final Map<String, Integer> dictionaryMap;
-
+        private final Map<String, Integer> tempDictionaryMap;
+        
         NanoMnemonicLanguage(String fileName) {
             try {
                 URL fileLocation = getClassLoader().getResource(fileName);
                 this.dictionary = unmodifiableList(Files.readAllLines(Paths.get(fileLocation.toURI())));
-                this.dictionaryMap = unmodifiableMap(range(0, dictionary.size()).boxed().collect(toMap(dictionary::get, i -> i)));
+                tempDictionaryMap = new HashMap<>();
+                for (String word: dictionary) {
+                	tempDictionaryMap.put(word, dictionary.indexOf(word));
+                }
+                this.dictionaryMap = unmodifiableMap(tempDictionaryMap);
             } catch (Exception e) {
                 throw new IllegalStateException("Could'nt read file " + fileName, e);
             }

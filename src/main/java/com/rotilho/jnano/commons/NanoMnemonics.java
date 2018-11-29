@@ -49,7 +49,7 @@ public final class NanoMnemonics {
 
     @NonNull
     public static byte[] bip39ToSeed(@NonNull List<String> mnemonic, @NonNull NanoMnemonicLanguage language) {
-        Preconditions.checkArgument(isValid(mnemonic, language), () -> "Invalid mnemonic");
+        Preconditions.checkArgument(isValid(mnemonic, language), "Invalid mnemonic");
         byte[] seedWithChecksum = extractSeedWithChecksum(mnemonic, language);
         try {
             return extractSeed(seedWithChecksum);

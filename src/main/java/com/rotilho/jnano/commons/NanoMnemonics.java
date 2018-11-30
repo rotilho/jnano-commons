@@ -148,13 +148,12 @@ public final class NanoMnemonics {
 
         private final List<String> dictionary;
         private final Map<String, Integer> dictionaryMap;
-        private final Map<String, Integer> tempDictionaryMap;
-        
+
         NanoMnemonicLanguage(String fileName) {
             try {
                 URL fileLocation = getClassLoader().getResource(fileName);
                 this.dictionary = unmodifiableList(Files.readAllLines(Paths.get(fileLocation.toURI())));
-                tempDictionaryMap = new HashMap<>();
+                Map<String, Integer> tempDictionaryMap = new HashMap<>();
                 for (String word: dictionary) {
                 	tempDictionaryMap.put(word, dictionary.indexOf(word));
                 }

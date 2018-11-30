@@ -36,6 +36,6 @@ public final class NanoSignatures {
     }
 
     private static void checkHash(String hash) {
-        Preconditions.checkArgument(NanoBlocks.isValid(hash), () -> "Invalid hash " + hash);
+        Preconditions.checkArgument(NanoBlocks.isValid(hash), "Invalid hash " + hash);
     }
 }

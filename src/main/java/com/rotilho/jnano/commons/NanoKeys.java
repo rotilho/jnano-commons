@@ -9,8 +9,8 @@ public final class NanoKeys {
     }
 
     public static byte[] createPrivateKey(@NonNull byte[] seed, int index) {
-        Preconditions.checkArgument(NanoSeeds.isValid(seed), () -> "Invalid seed " + seed);
-        Preconditions.checkArgument(index >= 0, () -> "Invalid index " + index);
+        Preconditions.checkArgument(NanoSeeds.isValid(seed), "Invalid seed " + seed);
+        Preconditions.checkArgument(index >= 0, "Invalid index " + index);
         return Hashes.digest256(seed, ByteBuffer.allocate(4).putInt(index).array());
     }
 

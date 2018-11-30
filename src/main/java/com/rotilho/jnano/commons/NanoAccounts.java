@@ -36,7 +36,7 @@ public final class NanoAccounts {
 
     @NonNull
     public static byte[] toPublicKey(@NonNull NanoAccountType type, @NonNull String account) {
-        Preconditions.checkArgument(isValid(type, account), () -> "Invalid account " + account);
+        Preconditions.checkArgument(isValid(type, account),"Invalid account " + account);
         return extractPublicKey(type, account);
     }
 

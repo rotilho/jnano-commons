@@ -1,8 +1,6 @@
 package com.rotilho.jnano.commons;
 
 import java.util.HashMap;
-import java.util.stream.Collectors;
-import java.util.stream.Stream;
 
 import static com.rotilho.jnano.commons.NanoHelper.leftPad;
 import static java.lang.String.valueOf;
@@ -14,19 +12,20 @@ final class NanoAccountEncodes {
     }
 
     static String decode(String encoded) {
-        return encoded.chars()
-                .mapToObj(c -> (char) c)
-                .map(ALPHABET::getBinary)
-                .collect(Collectors.joining());
+    	StringBuilder sb = new StringBuilder();
+    	for (int i = 0; i < encoded.length(); i++) {
+    		sb.append(ALPHABET.getBinary(encoded.charAt(i)));
+    	}
+    	return sb.toString();
     }
-
+  
     static String encode(String decoded) {
         int codeSize = 5;
-        return Stream.iterate(0, i -> i + codeSize)
-                .map(i -> decoded.substring(i, i + codeSize))
-                .map(ALPHABET::getCharacter)
-                .limit(decoded.length() / codeSize)
-                .collect(Collectors.joining());
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < decoded.length(); i += codeSize) {
+        	sb.append(ALPHABET.getCharacter(decoded.substring(i, i + codeSize)));
+        }
+        return sb.toString();
     }
 
 

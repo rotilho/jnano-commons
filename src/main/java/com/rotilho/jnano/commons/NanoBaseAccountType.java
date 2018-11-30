@@ -22,7 +22,7 @@ public enum NanoBaseAccountType implements NanoAccountType {
 
     @Override
     public String extractEncodedPublicKey(String account) {
-        if (prefix.contains("nano")) {
+        if (prefix.equals("nano_")) {
             return account.startsWith("nano_") ? account.substring(5, 57) : account.substring(4, 56);
         }
         return account.substring(4, 56);

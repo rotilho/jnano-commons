@@ -2,12 +2,12 @@ package com.rotilho.jnano.commons;
 
 import com.rotilho.jnano.commons.exception.ActionNotSupportedException;
 
-import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 
 import lombok.NonNull;
 
 public final class NanoSeeds {
+    private static final SecureRandom SECURE_RANDOM = new SecureRandom();
 
     private NanoSeeds() {
     }
@@ -21,14 +21,9 @@ public final class NanoSeeds {
      */
     @NonNull
     public static byte[] generateSeed() {
-        try {
-            SecureRandom secureRandom = SecureRandom.getInstanceStrong();
-            byte[] seed = new byte[32];
-            secureRandom.nextBytes(seed);
-            return seed;
-        } catch (NoSuchAlgorithmException e) {
-            throw new ActionNotSupportedException("Seed generation not supported", e);
-        }
+        byte[] seed = new byte[32];
+        SECURE_RANDOM.nextBytes(seed);
+        return seed;
     }
 
     public static boolean isValid(@NonNull byte[] seed) {

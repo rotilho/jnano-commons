@@ -3,6 +3,7 @@ package com.rotilho.jnano.commons;
 import com.rotilho.jnano.commons.exception.ActionNotSupportedException;
 
 import org.junit.After;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import java.security.Security;
@@ -23,6 +24,7 @@ public class NanoSeedsTest {
         assertTrue(NanoSeeds.isValid(NanoSeeds.generateSeed()));
     }
 
+    @Ignore("SecureRandom is using default provided by jdk")
     @Test(expected = ActionNotSupportedException.class)
     public void shouldNotGenerateSeedWhenAlgorithmIsNotAvailable() {
         Security.setProperty("securerandom.strongAlgorithms", "");

@@ -9,14 +9,14 @@ JNano provides a set of low level Nano operations that includes signing, seed ge
 ## How to use it?
 
 **Gradle**
-`compile 'com.rotilho.jnano:jnano-commons:1.4.1`
+`compile 'com.rotilho.jnano:jnano-commons:1.5.0`
 
 **Maven**
 ```xml
 <dependency>
     <groupId>com.rotilho.jnano</groupId>
     <artifactId>jnano-commons</artifactId>
-    <version>1.4.1</version>
+    <version>1.5.0</version>
 </dependency>
 ```
 
